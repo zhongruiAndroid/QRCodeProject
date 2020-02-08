@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CodeScanView">
+        <attr name="borderColor" format="color"></attr>
+        <attr name="borderWidth" format="dimension"></attr>
+
+        <attr name="cornerWidth" format="dimension"></attr>
+        <attr name="cornerLength" format="dimension"></attr>
+        <attr name="cornerColor" format="color"></attr>
+        <attr name="cornerXOffset" format="dimension"></attr>
+        <attr name="cornerYOffset" format="dimension"></attr>
+
+        <attr name="scanLineWidth" format="dimension"></attr>
+        <attr name="scanLineLength" format="dimension"></attr>
+        <attr name="scanLineColor" format="color"></attr>
+        <attr name="scanLineLeftOffset" format="dimension"></attr>
+        <attr name="scanLineRightOffset" format="dimension"></attr>
+
+
+        <attr name="scanColor" format="color"></attr>
+        <attr name="showScanColor" format="boolean"></attr>
+
+
+        <attr name="downTime" format="integer"></attr>
+
+        <attr name="centerDrawable" format="reference"></attr>
+        <attr name="centerDrawableColor" format="color"></attr>
+
+
+        <attr name="scanBorderLeft" format="dimension"></attr>
+        <attr name="scanBorderTop" format="dimension"></attr>
+        <attr name="scanBorderWidth" format="dimension"></attr>
+        <attr name="scanBorderHeight" format="dimension"></attr>
+
+    </declare-styleable>
+</resources>
