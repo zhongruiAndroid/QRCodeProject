@@ -114,7 +114,22 @@ public class CameraManager {
         camera.startPreview();
 
     }
+    public void stopDetect(){
+        if (camera == null) {
+            return;
+        }
+        if (loopThread != null) {
+            loopThread.stopDetect();
+        }
+        camera.setPreviewCallback(null);
+    }
+    public void startDetect(){
+        if (loopThread != null) {
+            loopThread.startDetect();
+        }
+        setPreviewCallback();
 
+    }
     private void setPreviewCallback() {
         if (camera == null) {
             return;
@@ -125,7 +140,6 @@ public class CameraManager {
                 if (scanConfig == null) {
                     initScanConfig();
                 }
-
                 if (loopThread != null) {
                     loopThread.offer(data);
                 }

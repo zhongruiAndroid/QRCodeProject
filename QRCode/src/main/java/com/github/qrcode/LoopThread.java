@@ -69,7 +69,12 @@ public class LoopThread extends Thread {
             }
         }
     }
-
+    public void startDetect(){
+        atomicBoolean = new AtomicBoolean(false);
+    }
+    public void stopDetect(){
+        atomicBoolean = new AtomicBoolean(true);
+    }
     private void getResult(final Result rawResult, final Bitmap bitmap) {
         if (getHandler() != null && qrCodeListener != null && !atomicBoolean.get()) {
             Message message = Message.obtain();
@@ -155,8 +160,8 @@ public class LoopThread extends Thread {
                                         }
                                     });
                                 }
-
-                                quit();
+//                                quit();
+                                clearFrame();
                             }
                         }
                         break;

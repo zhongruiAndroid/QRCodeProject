@@ -1,11 +1,15 @@
 package com.test.qrcode;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private Activity activity;
@@ -15,13 +19,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity=this;
+        activity = this;
         setContentView(R.layout.activity_main);
         btGoScan = findViewById(R.id.btGoScan);
         btGoScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(activity,ScanCodeActivity.class));
+                requestCamera();
             }
         });
 
@@ -29,8 +33,30 @@ public class MainActivity extends AppCompatActivity {
         btLookScanView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(activity,ScanViewActivity.class));
+                startActivity(new Intent(activity, ScanViewActivity.class));
             }
         });
     }
+
+    private void requestCamera() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode != 100) {
+            return;
+        }
+        if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            showMsg("没有相机权限");
+        } else {
+            startActivity(new Intent(activity, ScanCodeActivity.class));
+        }
+    }
+
+    private void showMsg(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
 }

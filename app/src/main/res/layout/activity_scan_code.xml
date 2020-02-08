@@ -15,4 +15,12 @@
         android:id="@+id/csv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <Button
+        android:id="@+id/btOpenLight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="打开闪光灯"
+        android:textAllCaps="false"
+        />
 </FrameLayout>

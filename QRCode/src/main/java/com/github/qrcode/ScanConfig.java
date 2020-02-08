@@ -55,7 +55,7 @@ public class ScanConfig {
         /*存放最多的帧数*/
         maxFrameNum = getListener().getMaxFrameNum();
         if(maxFrameNum<=0){
-            maxFrameNum=10;
+            maxFrameNum=6;
         }else if(maxFrameNum>20){
             maxFrameNum=20;
         }
