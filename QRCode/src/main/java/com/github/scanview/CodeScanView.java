@@ -36,7 +36,6 @@ public class CodeScanView extends View {
     private int cornerYOffset;
 
     private int scanLineWidth;
-    private int scanLineLength;
     private int scanLineColor;
     private int scanLineLeftOffset;
     private int scanLineRightOffset;
@@ -147,7 +146,7 @@ public class CodeScanView extends View {
         cornerPath3 = new Path();
         cornerPath4 = new Path();
 
-        borderClipPath=new Path();
+        borderClipPath = new Path();
 
     }
 
@@ -165,7 +164,6 @@ public class CodeScanView extends View {
         cornerYOffset = (int) typedArray.getDimension(R.styleable.CodeScanView_cornerYOffset, 0);
 
         scanLineWidth = (int) typedArray.getDimension(R.styleable.CodeScanView_scanLineWidth, getDefScanLineWidth());
-        scanLineLength = (int) typedArray.getDimension(R.styleable.CodeScanView_scanLineLength, -1);
         scanLineColor = typedArray.getColor(R.styleable.CodeScanView_scanLineColor, getDefColor());
 
         scanLineLeftOffset = (int) typedArray.getDimension(R.styleable.CodeScanView_scanLineLeftOffset, 0);
@@ -245,16 +243,13 @@ public class CodeScanView extends View {
 
         /*扫描框坐标和宽高*/
         updateScanXY(w, h);
-        /*扫描线*/
-        updateScanLine();
-
         /*扫描框path*/
         updateBorderPath();
         /*扫描框的四个角*/
         updateCornerPath();
 
-        if(isInEditMode()){
-            scanBitmapTop=getScanBorderHeight()/2+getScanBorderTop();
+        if (isInEditMode()) {
+            scanBitmapTop = getScanBorderHeight() / 2 + getScanBorderTop();
         }
     }
 
@@ -271,24 +266,26 @@ public class CodeScanView extends View {
         int count = canvas.saveLayer(getScanBorderLeft(), getScanBorderTop(), getScanBorderRight(), getScanBorderBottom(), null, Canvas.ALL_SAVE_FLAG);
 
         if (showScanColor && centerBitmap == null) {
-            canvas.drawRect(new RectF(scanBorderLeft+borderWidth, scanBitmapTop - scanBorderHeight + scanLineWidth / 2, scanBorderWidth + scanBorderLeft-borderWidth, scanBitmapTop + scanLineWidth / 2), scanColorPaint);
+            canvas.drawRect(new RectF(scanBorderLeft + borderWidth, scanBitmapTop - scanBorderHeight + scanLineWidth / 2, scanBorderWidth + scanBorderLeft - borderWidth, scanBitmapTop + scanLineWidth / 2), scanColorPaint);
         }
         if (centerBitmap == null) {
-            canvas.drawLine(scanBorderLeft + borderWidth  + scanLineLeftOffset, scanBitmapTop, scanLineLength + scanBorderLeft   + scanLineLeftOffset, scanBitmapTop, scanLinePaint);
+            canvas.drawLine(scanBorderLeft + borderWidth + scanLineLeftOffset, scanBitmapTop, scanBorderLeft + scanBorderWidth -scanLineRightOffset -borderWidth, scanBitmapTop, scanLinePaint);
         } else {
             int width = centerBitmap.getWidth();
             int offset = (scanBorderWidth - width) / 2;
             canvas.drawBitmap(centerBitmap, scanBorderLeft + offset, scanBitmapTop, null);
         }
 
-        canvas.drawPath(borderPath, borderColorPaint);
+        if (getBorderWidth() > 0) {
+            canvas.drawPath(borderPath, borderColorPaint);
+        }
 
         borderClipPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
         canvas.drawPath(borderClipPath, borderClipPaint);
 
-        if(isInEditMode()){
+        if (isInEditMode()) {
             canvas.restore();
-        }else{
+        } else {
             canvas.restoreToCount(count);
         }
 
@@ -325,14 +322,7 @@ public class CodeScanView extends View {
 
     }
 
-    private void updateScanLine() {
-        if (scanLineLength <= 0) {
-            scanLineLength = scanBorderWidth - borderWidth - scanLineLeftOffset - scanLineRightOffset;
-        } else if (scanLineLength < scanBorderWidth - borderWidth) {
-            scanLineLeftOffset = (scanBorderWidth - borderWidth - scanLineLength) / 2;
-            scanLineRightOffset = scanLineLeftOffset;
-        }
-    }
+
 
     private void updateBorderPath() {
         if (borderPath == null) {
@@ -342,14 +332,17 @@ public class CodeScanView extends View {
         }
 
         borderPath.addRect(new RectF(scanBorderLeft, scanBorderTop, scanBorderLeft + scanBorderWidth, scanBorderTop + scanBorderHeight), Path.Direction.CW);
+        updateClipPath();
+    }
 
-
+    private void updateClipPath() {
         if (borderClipPath == null) {
             borderClipPath = new Path();
         } else {
             borderClipPath.reset();
         }
-        borderClipPath.addRect(new RectF(scanBorderLeft+borderWidth, scanBorderTop+borderWidth, scanBorderLeft + scanBorderWidth-borderWidth, scanBorderTop + scanBorderHeight-borderWidth), Path.Direction.CW);
+        borderClipPath.addRect(new RectF(scanBorderLeft + borderWidth, scanBorderTop + borderWidth, scanBorderLeft + scanBorderWidth - borderWidth, scanBorderTop + scanBorderHeight - borderWidth), Path.Direction.CW);
+
     }
 
     private void updateCornerPath() {
@@ -446,7 +439,7 @@ public class CodeScanView extends View {
                 if (valueAnimator != null && valueAnimator.isRunning()) {
                     valueAnimator.cancel();
                 }
-                valueAnimator = ValueAnimator.ofFloat(borderWidth, scanBorderHeight-borderWidth);
+                valueAnimator = ValueAnimator.ofFloat(borderWidth, scanBorderHeight - borderWidth);
                 valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
@@ -503,7 +496,6 @@ public class CodeScanView extends View {
 
         updateLinearGradient();
 
-        updateScanLine();
         updateBorderPath();
         updateCornerPath();
     }
@@ -601,6 +593,7 @@ public class CodeScanView extends View {
         }
         this.borderWidth = borderWidth;
         borderColorPaint.setStrokeWidth(this.borderWidth * 2);
+        updateClipPath();
     }
 
     public int getCornerWidth() {
@@ -678,17 +671,8 @@ public class CodeScanView extends View {
         scanLinePaint.setStrokeWidth(scanLineWidth);
     }
 
-    public int getScanLineLength() {
-        return scanLineLength;
-    }
 
-    public void setScanLineLength(int scanLineLength) {
-        if (this.scanLineLength == scanLineLength) {
-            return;
-        }
-        this.scanLineLength = scanLineLength;
-        updateScanLine();
-    }
+
 
     public int getScanLineColor() {
         return scanLineColor;
@@ -711,7 +695,6 @@ public class CodeScanView extends View {
             return;
         }
         this.scanLineLeftOffset = scanLineLeftOffset;
-        updateScanLine();
     }
 
     public int getScanLineRightOffset() {
@@ -723,7 +706,6 @@ public class CodeScanView extends View {
             return;
         }
         this.scanLineRightOffset = scanLineRightOffset;
-        updateScanLine();
     }
 
     public int getScanColor() {
@@ -769,6 +751,11 @@ public class CodeScanView extends View {
             return;
         }
         this.centerDrawable = centerDrawable;
+        if(this.centerDrawable==null){
+            this.centerBitmap=null;
+        }else{
+            setShowScanColor(false);
+        }
         updateScanDrawable();
     }
 
@@ -789,10 +776,10 @@ public class CodeScanView extends View {
             return;
         }
         this.scanBorderLeft = scanBorderLeft;
-        if(getWidth()<=0){
+        if (getWidth() <= 0) {
             return;
         }
-        updateScanXY(getWidth(),getHeight());
+        updateScanXY(getWidth(), getHeight());
         updateBorderPath();
         updateCornerPath();
     }
@@ -802,10 +789,10 @@ public class CodeScanView extends View {
             return;
         }
         this.scanBorderTop = scanBorderTop;
-        if(getWidth()<=0){
+        if (getWidth() <= 0) {
             return;
         }
-        updateScanXY(getWidth(),getHeight());
+        updateScanXY(getWidth(), getHeight());
         updateBorderPath();
         updateCornerPath();
     }
@@ -819,13 +806,11 @@ public class CodeScanView extends View {
             return;
         }
         this.scanBorderWidth = scanBorderWidth;
-        if(getWidth()<=0){
+        if (getWidth() <= 0) {
             return;
         }
         /*扫描框坐标和宽高*/
-        updateScanXY(getWidth(),getHeight());
-        /*扫描线*/
-        updateScanLine();
+        updateScanXY(getWidth(), getHeight());
         /*扫描框path*/
         updateBorderPath();
         /*扫描框的四个角*/
@@ -842,11 +827,11 @@ public class CodeScanView extends View {
         }
         this.scanBorderHeight = scanBorderHeight;
 
-        if(getWidth()<=0){
+        if (getWidth() <= 0) {
             return;
         }
         /*扫描框坐标和宽高*/
-        updateScanXY(getWidth(),getHeight());
+        updateScanXY(getWidth(), getHeight());
         /*扫描框path*/
         updateBorderPath();
         /*扫描框的四个角*/

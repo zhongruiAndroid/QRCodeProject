@@ -13,12 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_marginTop="5dp"
         >
 
         <com.github.scanview.CodeScanView
             android:id="@+id/csv"
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            app:scanBorderLeft="300px"
+            app:scanBorderTop="100px"
+            app:scanBorderWidth="500px"
+            app:scanBorderHeight="500px"
             />
 
         <LinearLayout
@@ -167,6 +172,8 @@
                 android:id="@+id/sbScanBorderLeft"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:progress="300"
+                android:max="300"
                 android:layout_weight="1"/>
 
             <TextView
@@ -179,7 +186,9 @@
                 android:id="@+id/sbScanBorderTop"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:progress="100"
+                android:max="100"/>
         </LinearLayout>
 
         <LinearLayout
@@ -199,7 +208,10 @@
                 android:id="@+id/sbScanBorderWidth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:progress="500"
+                android:max="500"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -211,7 +223,9 @@
                 android:id="@+id/sbScanBorderHeight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:progress="500"
+                android:max="500"/>
         </LinearLayout>
 
         <LinearLayout
@@ -222,6 +236,7 @@
             >
 
             <Button
+                android:id="@+id/btBorderColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -230,6 +245,7 @@
                 />
 
             <Button
+                android:id="@+id/btCornerColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -237,13 +253,7 @@
                 android:textAllCaps="false"
                 />
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="scanLineColor"
-                android:textAllCaps="false"
-                />
+
 
         </LinearLayout>
 
@@ -253,45 +263,50 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             >
-
             <Button
+                android:id="@+id/btScanLineColor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="scanLineColor"
+                android:textAllCaps="false"
+                />
+            <Button
+                android:id="@+id/btScanColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="scanColor"
                 android:textAllCaps="false"
                 />
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="centerDrawableColor"
-                android:textAllCaps="false"
-                />
+
         </LinearLayout>
-        <RadioGroup
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             >
-            <RadioButton
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/cbShowScanColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="是否显示扫描渐变"
                 />
-            <RadioButton
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/cbUseDrawable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="扫描线使用图片"
                 />
             <Button
+                android:id="@+id/btDrawableColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="图片颜色"
                 android:textAllCaps="false"
                 />
-        </RadioGroup>
+        </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
