@@ -33,7 +33,6 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
 
 
     boolean isOpen;
-    private SurfaceHolder.Callback callback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,22 +68,19 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
 
         /*常规操作*/
         surfaceHolder = svPreview.getHolder();
-        callback = new SurfaceHolder.Callback() {
+        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                cameraManager.surfaceCreated(ScanCodeActivity.this, surfaceHolder);
+                cameraManager.surfaceCreated(ScanCodeActivity.this, holder);
             }
-
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             }
-
             @Override
             public void surfaceDestroyed(final SurfaceHolder holder) {
                 cameraManager.surfaceDestroyed();
             }
-        };
-        surfaceHolder.addCallback(callback);
+        });
 
     }
 
