@@ -98,11 +98,11 @@ public class CodeScanView extends View {
     private int defDownTime = 2200;
 
     private int getDefBorderWidth() {
-        return dp2px(3);
+        return dp2px(1);
     }
 
     private int getDefCornerWidth() {
-        return dp2px(4);
+        return dp2px(3);
     }
 
     private int getDefCornerLength() {
@@ -110,7 +110,7 @@ public class CodeScanView extends View {
     }
 
     private int getDefScanLineWidth() {
-        return 13;
+        return 3;
     }
 
     private int getDefColor() {
