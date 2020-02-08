@@ -16,7 +16,7 @@
         android:layout_marginTop="5dp"
         >
 
-        <com.github.scanview.CodeScanView
+        <com.github.qrcode.CodeScanView
             android:id="@+id/csv"
             android:layout_width="match_parent"
             android:layout_height="250dp"

@@ -1,4 +1,4 @@
-package com.github.scanview;
+package com.github.qrcode;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -22,8 +22,6 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-
-import com.github.qrcode.R;
 
 
 public class CodeScanView extends View {
