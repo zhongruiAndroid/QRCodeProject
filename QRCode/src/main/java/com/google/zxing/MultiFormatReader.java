@@ -16,21 +16,6 @@
 
 package com.google.zxing;
 
-import com.google.zxing.aztec.AztecReader;
-import com.google.zxing.datamatrix.DataMatrixReader;
-import com.google.zxing.maxicode.MaxiCodeReader;
-import com.google.zxing.oned.CodaBarReader;
-import com.google.zxing.oned.Code128Reader;
-import com.google.zxing.oned.Code39Reader;
-import com.google.zxing.oned.Code93Reader;
-import com.google.zxing.oned.EAN13Reader;
-import com.google.zxing.oned.EAN8Reader;
-import com.google.zxing.oned.ITFReader;
-import com.google.zxing.oned.UPCAReader;
-import com.google.zxing.oned.UPCEReader;
-import com.google.zxing.oned.rss.RSS14Reader;
-import com.google.zxing.oned.rss.expanded.RSSExpandedReader;
-import com.google.zxing.pdf417.PDF417Reader;
 import com.google.zxing.qrcode.QRCodeReader;
 
 import java.util.ArrayList;
@@ -89,22 +74,7 @@ public final class MultiFormatReader implements Reader {
         if (formatMap == null) {
             formatMap = new ConcurrentHashMap<>();
 
-            formatMap.put("AZTEC", new AztecReader());
-            formatMap.put("CODABAR", new CodaBarReader());
-            formatMap.put("CODE_39", new Code39Reader(false));
-            formatMap.put("CODE_93", new Code93Reader());
-            formatMap.put("CODE_128", new Code128Reader());
-            formatMap.put("DATA_MATRIX", new DataMatrixReader());
-            formatMap.put("EAN_8", new EAN8Reader());
-            formatMap.put("EAN_13", new EAN13Reader());
-            formatMap.put("ITF", new ITFReader());
-            formatMap.put("MAXICODE", new MaxiCodeReader());
-            formatMap.put("PDF_417", new PDF417Reader());
             formatMap.put("QR_CODE", new QRCodeReader());
-            formatMap.put("RSS_14", new RSS14Reader());
-            formatMap.put("RSS_EXPANDED", new RSSExpandedReader());
-            formatMap.put("UPC_A", new UPCAReader());
-            formatMap.put("UPC_E", new UPCEReader());
         }
         return formatMap;
     }
