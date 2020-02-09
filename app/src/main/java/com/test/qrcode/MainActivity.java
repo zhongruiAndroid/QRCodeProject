@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -15,12 +16,13 @@ public class MainActivity extends AppCompatActivity {
     private Activity activity;
     private Button btGoScan;
     private Button btLookScanView;
-
+    private AppCompatCheckBox cbScreenType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
         setContentView(R.layout.activity_main);
+        cbScreenType = findViewById(R.id.cbScreenType);
         btGoScan = findViewById(R.id.btGoScan);
         btGoScan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
         if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
             showMsg("没有相机权限");
         } else {
-            startActivity(new Intent(activity, ScanCodeActivity.class));
+            Intent intent = new Intent(activity, ScanCodeActivity.class);
+            intent.putExtra("type",cbScreenType.isChecked());
+            startActivity(intent);
         }
     }
 

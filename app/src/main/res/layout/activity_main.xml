@@ -8,13 +8,27 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btGoScan"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="去扫码"
-        android:textAllCaps="false"
-        />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cbScreenType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="扫描页面是否横屏"
+            />
+        <Button
+            android:id="@+id/btGoScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="去扫码"
+            android:textAllCaps="false"
+            />
+    </LinearLayout>
+
     <Button
         android:id="@+id/btLookScanView"
         android:layout_width="match_parent"

@@ -40,7 +40,10 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        boolean type = getIntent().getBooleanExtra("type", false);
+        if(type){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         setContentView(R.layout.activity_scan_code);
 
         svPreview = findViewById(R.id.svPreview);
