@@ -85,31 +85,6 @@ public void onSuccess(Result rawResult, Bitmap bitmap) {
     /*bitmap:扫描成功时的图片，needGetBitmapForSuccess返回false时为空*/
 }
 
-@Override
-public List<String> getCodeFormat() {
-    /*需要识别的一维码、二维码格式*/
-    /*如果需要支持多种格式，建议把常用的放在上面*/
-    List<String>list=new ArrayList<>();
-    list.add(CodeFormat.QR_CODE);
-    list.add(CodeFormat.AZTEC);
-    list.add(CodeFormat.CODABAR);
-    list.add(CodeFormat.CODE_39);
-    list.add(CodeFormat.CODE_93);
-    list.add(CodeFormat.CODE_128);
-    list.add(CodeFormat.DATA_MATRIX);
-    list.add(CodeFormat.EAN_8);
-    list.add(CodeFormat.EAN_13);
-    list.add(CodeFormat.ITF);
-    list.add(CodeFormat.MAXICODE);
-    list.add(CodeFormat.PDF_417);
-    list.add(CodeFormat.RSS_14);
-
-    /*返回null默认为CodeFormat.QR_CODE:常用的二维条码*/
-    /*如果没有其他格式需求，建议返回null*/
-    return null;
-}
-
-
 ```
 ##### 第五步
 建议SurfaceView和CodeScanView放在FrameLayout中，layout_width、layout_height、layout_margin属性一定要保持一致
