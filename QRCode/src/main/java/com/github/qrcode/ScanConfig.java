@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScanConfig {
+    public static final int MAX_SIZE=6;
 
     public List<String>codeFormat;
     private QRCodeListener listener;
@@ -24,7 +25,7 @@ public class ScanConfig {
 
 
     public ScanConfig(QRCodeListener qrCodeListener) {
-        maxFrameNum=10;
+        maxFrameNum=MAX_SIZE;
         this.listener = qrCodeListener;
     }
     public QRCodeListener getListener() {
