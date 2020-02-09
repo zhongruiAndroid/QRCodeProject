@@ -48,10 +48,14 @@ public class LoopThread extends Thread {
         maxSize=maxFrameNum;
         frameQueue = new LinkedBlockingQueue(maxFrameNum);
     }
-
+    private boolean isVerticalScreen;
+    public void setVerticalScreen(boolean isVerticalScreen){
+        this.isVerticalScreen=isVerticalScreen;
+    }
     public void startEncode(byte[] data, int screenW, int screenH, Rect scanRect, boolean isNeedGetScanBitmap) {
         EncodeRunnable encodeRunnable = new EncodeRunnable(data, screenW, screenH);
         encodeRunnable.setCodeFormat(codeFormat);
+        encodeRunnable.setVerticalScreen(isVerticalScreen);
         encodeRunnable.setEncodeRect(scanRect);
         encodeRunnable.setNeedGetScanBitmap(isNeedGetScanBitmap);
         encodeRunnable.setListener(new EncodeSuccessListener() {

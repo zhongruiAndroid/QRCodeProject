@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_scan_code);
 
         svPreview = findViewById(R.id.svPreview);
@@ -105,8 +107,8 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
 
     @Override
     public Rect getScanRect() {
-        return csv.getScanRectForWindow();
-//        return null;
+//        return csv.getScanRectForWindow();
+        return null;
     }
     @Override
     public boolean needGetBitmapForSuccess() {
@@ -182,7 +184,7 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
 //        list.add(CodeFormat.MAXICODE);
 //        list.add(CodeFormat.PDF_417);
 //        list.add(CodeFormat.RSS_14);
-//        list.add(CodeFormat.QR_CODE);
+        list.add(CodeFormat.QR_CODE);
 
         /*返回null默认为CodeFormat.QR_CODE:常用的二维条码*/
         /*如果没有其他格式需求，建议返回null*/

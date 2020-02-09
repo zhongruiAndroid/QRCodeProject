@@ -1,7 +1,6 @@
 package com.github.qrcode;
 
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.graphics.Rect;
 
 import com.google.zxing.BinaryBitmap;
@@ -20,6 +19,11 @@ public class EncodeRunnable implements Runnable {
     private boolean needGetScanBitmap;
     private Rect encodeRect;
     private List<String> codeFormat;
+    private boolean isVerticalScreen;
+
+    public void setVerticalScreen(boolean isVerticalScreen) {
+        this.isVerticalScreen = isVerticalScreen;
+    }
 
     public void setListener(EncodeSuccessListener listener) {
         this.listener = listener;
@@ -79,11 +83,11 @@ public class EncodeRunnable implements Runnable {
         startEncode();
     }
 
-    public static byte[] rotate90(byte[]originData,int originWidth,int originHeight){
-        if(originData==null){
+    public byte[] rotate90(byte[] originData, int originWidth, int originHeight) {
+        if (originData == null) {
             return originData;
         }
-        byte [] newData=new byte[originData.length];
+        byte[] newData = new byte[originData.length];
         for (int y = 0; y < originHeight; y++) {
             for (int x = 0; x < originWidth; x++) {
                 newData[x * originHeight + originHeight - y - 1] = originData[x + y * originWidth];
@@ -91,34 +95,18 @@ public class EncodeRunnable implements Runnable {
         }
         return newData;
     }
-    private byte[] rotateYUV420Degree90(byte[] data, int imageWidth, int imageHeight) {
-        byte[] yuv = new byte[imageWidth * imageHeight * 3 / 2];
-        // Rotate the Y luma
-        int i = 0;
-        for (int x = 0; x < imageWidth; x++) {
-            for (int y = imageHeight - 1; y >= 0; y--) {
-                yuv[i] = data[y * imageWidth + x];
-                i++;
-            }
-        }
-        // Rotate the U and V color components
-        i = imageWidth * imageHeight * 3 / 2 - 1;
-        for (int x = imageWidth - 1; x > 0; x = x - 2) {
-            for (int y = 0; y < imageHeight / 2; y++) {
-                yuv[i] = data[(imageWidth * imageHeight) + (y * imageWidth) + x];
-                i--;
-                yuv[i] = data[(imageWidth * imageHeight) + (y * imageWidth) + (x - 1)];
-                i--;
-            }
-        }
-        return yuv;
-    }
 
     private void startEncode() {
         MultiFormatReader multiFormatReader = new MultiFormatReader();
         multiFormatReader.setCodeFormat(codeFormat);
         Result rawResult = null;
-        PlanarYUVLuminanceSource source = buildLuminanceSource(rotate90(data,screenHeight,screenWidth),screenWidth,screenHeight);
+
+        PlanarYUVLuminanceSource source;
+        if (isVerticalScreen) {
+            source = buildLuminanceSource(rotate90(data, screenHeight, screenWidth), screenWidth, screenHeight);
+        } else {
+            source = buildLuminanceSource(data, screenHeight, screenWidth);
+        }
         if (source != null) {
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
             try {
@@ -146,11 +134,13 @@ public class EncodeRunnable implements Runnable {
     private PlanarYUVLuminanceSource buildLuminanceSource(byte[] data, int width, int height) {
         Rect rect = new Rect(getEncodeRect());
         if (rect == null) {
-            rect = new Rect(0, 0,   height,width);
-        }
-        /*if (rect == null) {
-            rect = new Rect(0, 0, width, height);
-        } else {
+            if (isVerticalScreen) {
+                rect = new Rect(0, 0, height, width);
+            } else {
+                rect = new Rect(0, 0, width, height);
+            }
+        } else if (!isVerticalScreen) {
+            //如果横屏，改变rect坐标
             if (rect.width() > height) {
                 int top = rect.top;
                 int bottom = rect.bottom;
@@ -168,7 +158,7 @@ public class EncodeRunnable implements Runnable {
 
             //因为摄像头默认横向,这里相对横向坐标转换位置
             rect.set(top, height - right, bottom, height - left);
-        }*/
+        }
         return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top, rect.width(), rect.height(), false);
     }
 
@@ -178,9 +168,9 @@ public class EncodeRunnable implements Runnable {
         int height = source.getThumbnailHeight();
         Bitmap bitmap = Bitmap.createBitmap(pixels, 0, width, width, height, Bitmap.Config.ARGB_8888);
 
-        Matrix matrix = new Matrix();
+       /* Matrix matrix = new Matrix();
         matrix.setRotate(90);
-        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);*/
 
       /*  Bitmap newBitmap=Bitmap.createBitmap(height,width, Bitmap.Config.RGB_565);
         Canvas canvas=new Canvas(newBitmap);
@@ -197,7 +187,7 @@ public class EncodeRunnable implements Runnable {
             barcode = BitmapFactory.decodeByteArray(compressedBitmap, 0, compressedBitmap.length, null);
             barcode = barcode.copy(Bitmap.Config.ARGB_8888, true);
         }*/
-        return newBitmap;
+        return bitmap;
     }
 
 }

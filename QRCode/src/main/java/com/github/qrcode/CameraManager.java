@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 
 import java.io.IOException;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+
 
 public class CameraManager {
     private boolean hasPermission;
@@ -24,6 +26,9 @@ public class CameraManager {
 
     private boolean hasSurface;
     private SurfaceHolder surfaceHolder;
+
+    /*是否是竖屏*/
+    private boolean isVerticalScreen;
 
     public CameraManager(QRCodeListener qrCodeListener) {
 
@@ -60,6 +65,9 @@ public class CameraManager {
         if (context == null) {
             throw new IllegalStateException("onResume(Context context) context can not null");
         }
+        /*如果不是横向就判断为竖向*/
+        isVerticalScreen=context.getResources().getConfiguration().orientation!=ORIENTATION_LANDSCAPE;
+
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             hasPermission = true;
         } else {
@@ -89,13 +97,18 @@ public class CameraManager {
             //说明相机已经被打开还没释放
             throw new IllegalStateException("Camera initialization failed because the camera device was already opened(-16),无法启动相机,检查是否有启动相机之后没有释放相机,或者第三方应用后台运行(如手电筒)");
         }
-        camera.setDisplayOrientation(90);
+        if(isVerticalScreen){
+            camera.setDisplayOrientation(90);
+        }
 
         Camera.Parameters parameters = camera.getParameters();
         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         Point bestPreviewSizeValue = CameraUtils.findBestPreviewSizeValue(parameters, scanConfig.screenWidth, scanConfig.screenHeight);
         parameters.setPreviewSize(bestPreviewSizeValue.x, bestPreviewSizeValue.y);
-        parameters.setRotation(90);
+
+        if(isVerticalScreen){
+            parameters.setRotation(90);
+        }
 
         camera.setParameters(parameters);
 
@@ -151,6 +164,7 @@ public class CameraManager {
         if (loopThread == null) {
             loopThread = new LoopThread(scanConfig.screenWidth, scanConfig.screenHeight, scanConfig.maxFrameNum, scanConfig.scanRect, scanConfig.isNeed);
             loopThread.setQRCodeListener(listener);
+            loopThread.setVerticalScreen(isVerticalScreen);
             loopThread.setCodeFormat(scanConfig.codeFormat);
         }
         return loopThread;
