@@ -10,6 +10,8 @@ public class YourActivity extends AppCompatActivity implements QRCodeListener {
 ```java
 /*找到布局中的SurfaceView*/
 SurfaceView surfaceView = findViewById(R.id.surfaceView);
+/*扫描框view*/
+CodeScanView codeScanView= findViewById(R.id.codeScanView);
 
  /*实例化CameraManager*/
 CameraManager cameraManager = new CameraManager(this);
@@ -60,18 +62,18 @@ public Activity getAct() {
 }
 @Override
 public Rect getScanRect() {
-	/*扫描框所识别的范围,如果返回null,则识别整个SurfaceView范围*/
-	/*CodeScanView为默认提供的一个自定义view，下面详细说明使用方法,getScanRectForWindow获取扫描范围*/
+    /*扫描框所识别的范围,如果返回null,则识别整个SurfaceView范围*/
+    /*CodeScanView为默认提供的一个自定义view，下面详细说明使用方法,getScanRectForWindow获取扫描范围*/
     return codeScanView.getScanRectForWindow();
 }
 @Override
 public boolean needGetBitmapForSuccess() {
-	/*如果需要扫描成功时的二维码可以返回true，如果没这个需求，建议返回false*/
+    /*如果需要扫描成功时的二维码可以返回true，如果没这个需求，建议返回false*/
     return true;
 }
 @Override
 public int getMaxFrameNum() {
-	/*同时解码的数量，返回0默认为6，最大值不会超过20，建议返回0或者6*/
+    /*同时解码的数量，返回0默认为6，最大值不会超过20，建议返回0或者6*/
     return 5;
 }
 @Override
@@ -82,9 +84,9 @@ public void onSuccess(Result rawResult, Bitmap bitmap) {
 
 @Override
 public List<String> getCodeFormat() {
-	/*需要识别的一维码、二维码格式*/
-	/*如果需要支持多种格式，建议把常用的放在上面*/
-	List<String>list=new ArrayList<>();
+    /*需要识别的一维码、二维码格式*/
+    /*如果需要支持多种格式，建议把常用的放在上面*/
+    List<String>list=new ArrayList<>();
     list.add(CodeFormat.QR_CODE);
     list.add(CodeFormat.AZTEC);
     list.add(CodeFormat.CODABAR);
