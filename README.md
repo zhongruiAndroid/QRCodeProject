@@ -1,5 +1,5 @@
 ## 二维码扫描(仅QR_CODE格式,库体积较小)
-[全格式](https://github.com/zhongruiAndroid/QRCodeProject)
+### [查看全格式分支](https://github.com/zhongruiAndroid/QRCodeProject)
 
 
 ##### 第一步(Activity实现QRCodeListener 接口)
