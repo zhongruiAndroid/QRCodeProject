@@ -16,12 +16,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.github.qrcode.ScanConfig.MAX_SIZE;
+
 public class LoopThread extends Thread {
     private final int msg_what = 100;
     private final int success_what = 101;
     private Handler handler;
     private Handler mainHandler;
-    private Queue<byte[]> frameQueue = new LinkedBlockingQueue(10);
+    private Queue<byte[]> frameQueue = new LinkedBlockingQueue(MAX_SIZE);
     private ExecutorService executors;
     private QRCodeListener qrCodeListener;
     private AtomicBoolean atomicBoolean;
@@ -30,6 +32,7 @@ public class LoopThread extends Thread {
     private Rect scanRect;
     private boolean isNeedGetScanBitmap;
     private List<String> codeFormat;
+    private int maxSize=MAX_SIZE;
 
     public LoopThread(final int screenWidth, final int screenHeight, int maxFrameNum, final Rect scanRect, final boolean isNeedGetScanBitmap) {
         this.screenWidth = screenWidth;
@@ -40,8 +43,9 @@ public class LoopThread extends Thread {
         atomicBoolean = new AtomicBoolean(false);
         executors = Executors.newCachedThreadPool();
         if (maxFrameNum <= 0) {
-            maxFrameNum = 10;
+            maxFrameNum = MAX_SIZE;
         }
+        maxSize=maxFrameNum;
         frameQueue = new LinkedBlockingQueue(maxFrameNum);
     }
 
@@ -107,7 +111,7 @@ public class LoopThread extends Thread {
     }
 
     public void offer(byte[] data) {
-        if (frameQueue != null) {
+        if (data!=null&&frameQueue != null&&frameQueue.size()<maxSize) {
             frameQueue.offer(data);
         }
         if (getHandler() != null) {
