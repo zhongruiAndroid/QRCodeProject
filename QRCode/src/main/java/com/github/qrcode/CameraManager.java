@@ -58,7 +58,7 @@ public class CameraManager {
 
     public void onResume(Context context) {
         if (context == null) {
-            throw new IllegalStateException("CameraManager(Context context) context can not null");
+            throw new IllegalStateException("onResume(Context context) context can not null");
         }
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             hasPermission = true;
