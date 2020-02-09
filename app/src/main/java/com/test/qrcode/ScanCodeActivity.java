@@ -107,8 +107,8 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
 
     @Override
     public Rect getScanRect() {
-//        return csv.getScanRectForWindow();
-        return null;
+        return csv.getScanRectForWindow();
+//        return null;
     }
     @Override
     public boolean needGetBitmapForSuccess() {
@@ -116,7 +116,7 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
     }
     @Override
     public int getMaxFrameNum() {
-        return 20;
+        return 6;
     }
 
     private boolean jumpAct = false;
@@ -172,19 +172,20 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
         /*需要识别的一维码、二维码格式*/
         /*如果需要支持多种格式，建议把常用的放在上面*/
         List<String>list=new ArrayList<>();
-//        list.add(CodeFormat.AZTEC);
-//        list.add(CodeFormat.CODABAR);
-//        list.add(CodeFormat.CODE_39);
-//        list.add(CodeFormat.CODE_93);
-//        list.add(CodeFormat.CODE_128);
-//        list.add(CodeFormat.DATA_MATRIX);
-//        list.add(CodeFormat.EAN_8);
-        list.add(CodeFormat.EAN_13);
-//        list.add(CodeFormat.ITF);
-//        list.add(CodeFormat.MAXICODE);
-//        list.add(CodeFormat.PDF_417);
-//        list.add(CodeFormat.RSS_14);
+
         list.add(CodeFormat.QR_CODE);
+        list.add(CodeFormat.AZTEC);
+        list.add(CodeFormat.CODABAR);
+        list.add(CodeFormat.CODE_39);
+        list.add(CodeFormat.CODE_93);
+        list.add(CodeFormat.CODE_128);
+        list.add(CodeFormat.DATA_MATRIX);
+        list.add(CodeFormat.EAN_8);
+        list.add(CodeFormat.EAN_13);
+        list.add(CodeFormat.ITF);
+        list.add(CodeFormat.MAXICODE);
+        list.add(CodeFormat.PDF_417);
+        list.add(CodeFormat.RSS_14);
 
         /*返回null默认为CodeFormat.QR_CODE:常用的二维条码*/
         /*如果没有其他格式需求，建议返回null*/
