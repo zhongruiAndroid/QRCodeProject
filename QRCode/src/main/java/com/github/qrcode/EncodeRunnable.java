@@ -79,14 +79,17 @@ public class EncodeRunnable implements Runnable {
         startEncode();
     }
 
-    private byte[] test(byte[] mData, int imageWidth, int imageHeight) {
-        byte[] data=  new byte[mData.length];
-            for (int y = 0; y < imageHeight; y++) {
-                for (int x = 0; x < imageWidth; x++) {
-                    data[x * imageHeight + imageHeight - y - 1] = mData[x + y * imageWidth];
-                }
+    public static byte[] rotate90(byte[]originData,int originWidth,int originHeight){
+        if(originData==null){
+            return originData;
+        }
+        byte [] newData=new byte[originData.length];
+        for (int y = 0; y < originHeight; y++) {
+            for (int x = 0; x < originWidth; x++) {
+                newData[x * originHeight + originHeight - y - 1] = originData[x + y * originWidth];
             }
-        return data;
+        }
+        return newData;
     }
     private byte[] rotateYUV420Degree90(byte[] data, int imageWidth, int imageHeight) {
         byte[] yuv = new byte[imageWidth * imageHeight * 3 / 2];
@@ -115,7 +118,7 @@ public class EncodeRunnable implements Runnable {
         MultiFormatReader multiFormatReader = new MultiFormatReader();
         multiFormatReader.setCodeFormat(codeFormat);
         Result rawResult = null;
-        PlanarYUVLuminanceSource source = buildLuminanceSource(test(data,screenHeight,screenWidth),screenWidth,  screenHeight);
+        PlanarYUVLuminanceSource source = buildLuminanceSource(rotate90(data,screenHeight,screenWidth),screenWidth,screenHeight);
         if (source != null) {
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
             try {
