@@ -108,7 +108,7 @@ public List<String> getCodeFormat() {
 
 
 ```
-###### 第五步
+##### 第五步
 建议SurfaceView和CodeScanView放在FrameLayout中，layout_width、layout_height、layout_margin属性一定要保持一致
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -158,7 +158,7 @@ cameraManager.startDetect();
 cameraManager.stopDetect();
 ```
 
-### 注意！！！建议进入扫描页面之前请求相机权限，如果进入页面之后获取权限，第一次识别会有点慢
+#### 注意！！！建议进入扫描页面之前请求相机权限，如果进入页面之后获取权限，第一次识别可能会有点慢
 ---
 
 ### 自定义扫描框CodeScanView使用
