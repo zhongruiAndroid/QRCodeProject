@@ -105,7 +105,7 @@ public class EncodeRunnable implements Runnable {
         if (isVerticalScreen) {
             source = buildLuminanceSource(rotate90(data, screenHeight, screenWidth), screenWidth, screenHeight);
         } else {
-            source = buildLuminanceSource(data, screenHeight, screenWidth);
+            source = buildLuminanceSource(data, screenWidth, screenHeight);
         }
         if (source != null) {
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
@@ -128,12 +128,12 @@ public class EncodeRunnable implements Runnable {
         }
     }
 
-    /*width：横屏时的宽度
-     * height：横屏的高度
-     * */
     private PlanarYUVLuminanceSource buildLuminanceSource(byte[] data, int width, int height) {
         Rect rect = new Rect(getEncodeRect());
         if (rect == null) {
+            rect = new Rect(0, 0, width, height);
+        }
+       /* if (rect == null) {
             if (isVerticalScreen) {
                 rect = new Rect(0, 0, height, width);
             } else {
@@ -158,7 +158,7 @@ public class EncodeRunnable implements Runnable {
 
             //因为摄像头默认横向,这里相对横向坐标转换位置
             rect.set(top, height - right, bottom, height - left);
-        }
+        }*/
         return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top, rect.width(), rect.height(), false);
     }
 

@@ -103,7 +103,12 @@ public class CameraManager {
 
         Camera.Parameters parameters = camera.getParameters();
         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-        Point bestPreviewSizeValue = CameraUtils.findBestPreviewSizeValue(parameters, scanConfig.screenWidth, scanConfig.screenHeight);
+        Point bestPreviewSizeValue;
+        if(isVerticalScreen){
+            bestPreviewSizeValue = CameraUtils.findBestPreviewSizeValue(parameters, scanConfig.screenWidth, scanConfig.screenHeight);
+        }else{
+            bestPreviewSizeValue = CameraUtils.findBestPreviewSizeValue(parameters, scanConfig.screenHeight, scanConfig.screenWidth);
+        }
         parameters.setPreviewSize(bestPreviewSizeValue.x, bestPreviewSizeValue.y);
 
         if(isVerticalScreen){

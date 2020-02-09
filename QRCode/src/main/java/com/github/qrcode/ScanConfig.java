@@ -38,14 +38,15 @@ public class ScanConfig {
         }
         Resources resources = activity.getResources();
         Configuration configuration = resources.getConfiguration();
-        /*竖屏*/
+        screenWidth=getScreenWidth(activity);
+        screenHeight=getScreenHeight(activity);
+        /*
         if(configuration.orientation==Configuration.ORIENTATION_PORTRAIT){
-            screenWidth=getScreenWidth(activity);
-            screenHeight=getScreenHeight(activity);
+
         }else{
             screenWidth=getScreenHeight(activity);
             screenHeight=getScreenWidth(activity);
-        }
+        }*/
 
         scanRect = getListener().getScanRect();
         if(scanRect ==null|| scanRect.width()<=0|| scanRect.height()<=0){
