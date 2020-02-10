@@ -15,6 +15,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     private Activity activity;
     private Button btGoScan;
+    private Button btMakeCode;
     private Button btLookScanView;
     private AppCompatCheckBox cbScreenType;
     @Override
@@ -28,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 requestCamera();
+            }
+        });
+
+        btMakeCode = findViewById(R.id.btMakeCode);
+        btMakeCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(activity, MakeCodeActivity.class));
             }
         });
 
@@ -58,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-//2222
     private void showMsg(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
