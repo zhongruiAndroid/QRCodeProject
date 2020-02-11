@@ -149,28 +149,29 @@ public class LoopThread extends Thread {
                         startEncode(poll, screenWidth, screenHeight, scanRect, isNeedGetScanBitmap);
                         break;
                     case success_what:
-                        if (!atomicBoolean.get()) {
-                            Object msgObj = msg.obj;
-                            if (msgObj == null || !(msgObj instanceof Object[])) {
-                                break;
-                            }
-                            Object[] objects = (Object[]) msgObj;
-                            if (objects.length == 2) {
-                               final Result rawResult = (Result) objects[0];
-                               final Bitmap bitmap = (Bitmap) objects[1];
-                                atomicBoolean.set(true);
+                        if (atomicBoolean.get()) {
+                            return false;
+                        }
+                        Object msgObj = msg.obj;
+                        if (msgObj == null || !(msgObj instanceof Object[])) {
+                            break;
+                        }
+                        Object[] objects = (Object[]) msgObj;
+                        if (objects.length == 2) {
+                            final Result rawResult = (Result) objects[0];
+                            final Bitmap bitmap = (Bitmap) objects[1];
+                            atomicBoolean.set(true);
 
-                                if (qrCodeListener != null) {
-                                    getMainHandler().post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            qrCodeListener.onSuccess(rawResult, bitmap);
-                                        }
-                                    });
-                                }
-//                                quit();
-                                clearFrame();
+                            if (qrCodeListener != null) {
+                                getMainHandler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        qrCodeListener.onSuccess(rawResult, bitmap);
+                                    }
+                                });
                             }
+//                                quit();
+                            clearFrame();
                         }
                         break;
                 }
