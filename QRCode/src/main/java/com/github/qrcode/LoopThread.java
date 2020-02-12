@@ -15,15 +15,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.qrcode.ScanConfig.MAX_SIZE;
 
 public class LoopThread extends Thread {
     private final int msg_what = 100;
     private final int success_what = 101;
-    private Handler handler;
+    private Handler threadHandler;
     private Handler mainHandler;
     private Queue<byte[]> frameQueue = new LinkedBlockingQueue(MAX_SIZE);
+    private AtomicInteger frameNum;
     private ExecutorService executors;
     private QRCodeListener qrCodeListener;
     private AtomicBoolean atomicBoolean;
@@ -35,6 +37,7 @@ public class LoopThread extends Thread {
     private int maxSize=MAX_SIZE;
 
     public LoopThread(final int screenWidth, final int screenHeight, int maxFrameNum, final Rect scanRect, final boolean isNeedGetScanBitmap) {
+        frameNum=new AtomicInteger();
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.scanRect = scanRect;
@@ -61,12 +64,13 @@ public class LoopThread extends Thread {
         encodeRunnable.setListener(new EncodeSuccessListener() {
             @Override
             public void onSuccess(final Result rawResult, final Bitmap bitmap) {
+                reduceFrame();
                 getResult(rawResult, bitmap);
             }
 
             @Override
             public void onError() {
-
+                reduceFrame();
             }
         });
         if (executors != null) {
@@ -77,6 +81,19 @@ public class LoopThread extends Thread {
             }
         }
     }
+    private void addFrame(){
+        if(frameNum!=null){
+            frameNum.incrementAndGet();
+        }
+    }
+    private void reduceFrame(){
+        if(frameNum!=null){
+            frameNum.decrementAndGet();
+        }
+    }
+    public int getFrameNum(){
+        return frameNum==null?0:frameNum.get();
+    }
     public void startDetect(){
         atomicBoolean = new AtomicBoolean(false);
     }
@@ -84,14 +101,14 @@ public class LoopThread extends Thread {
         atomicBoolean = new AtomicBoolean(true);
     }
     private void getResult(final Result rawResult, final Bitmap bitmap) {
-        if (getHandler() != null && qrCodeListener != null && !atomicBoolean.get()) {
+        if (getThreadHandler() != null && qrCodeListener != null && !atomicBoolean.get()) {
             Message message = Message.obtain();
             if(message==null){
                 return;
             }
             message.obj = new Object[]{rawResult, bitmap};
             message.what = success_what;
-            getHandler().sendMessage(message);
+            getThreadHandler().sendMessage(message);
         }
     }
 
@@ -111,26 +128,28 @@ public class LoopThread extends Thread {
     public void clearFrame() {
         if (frameQueue != null) {
             frameQueue.clear();
+            frameNum.set(0);
         }
     }
 
     public void offer(byte[] data) {
-        if (data!=null&&frameQueue != null&&frameQueue.size()<maxSize) {
+        if (data!=null&&frameQueue != null&&getFrameNum()<maxSize) {
             frameQueue.offer(data);
+            addFrame();
         }
-        if (getHandler() != null) {
-            getHandler().sendEmptyMessage(msg_what);
+        if (getThreadHandler() != null) {
+            getThreadHandler().sendEmptyMessage(msg_what);
         }
     }
 
-    public Handler getHandler() {
-        return handler;
+    public Handler getThreadHandler() {
+        return threadHandler;
     }
 
     @Override
     public void run() {
         Looper.prepare();
-        handler = new Handler(new Handler.Callback() {
+        threadHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 switch (msg.what) {
@@ -189,10 +208,10 @@ public class LoopThread extends Thread {
     public void quit() {
         clearFrame();
 
-        if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
+        if (threadHandler != null) {
+            threadHandler.removeCallbacksAndMessages(null);
 
-            Looper looper = handler.getLooper();
+            Looper looper = threadHandler.getLooper();
             if (looper == null) {
                 return;
             }
@@ -202,7 +221,7 @@ public class LoopThread extends Thread {
                 looper.quit();
             }
 
-            handler = null;
+            threadHandler = null;
         }
         stopAllRunnable();
 
