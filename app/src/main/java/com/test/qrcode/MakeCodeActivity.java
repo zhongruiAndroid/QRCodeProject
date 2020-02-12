@@ -242,7 +242,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 if(cbAddIcon.isChecked()){
                       logoBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.test);
                 }
-                Bitmap bitmap = CreateCodeUtils.createCode(content, logoBitmap,size/2,size,createConfig);
+                Bitmap bitmap = CreateCodeUtils.createCode(content, logoBitmap,size,size/2,createConfig);
                 if(bitmap!=null){
                     ivCode.setImageBitmap(bitmap);
                 }else{
