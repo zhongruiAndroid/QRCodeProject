@@ -10,7 +10,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
  */
 public class CreateConfig {
     public ErrorCorrectionLevel errorCorrection= ErrorCorrectionLevel.H;
-    public String characterSet="utf-8";
+    private String characterSet="utf-8";
     private int margin=3;
     private int qrVersion=3;
     private int codeSize=800;
@@ -18,9 +18,11 @@ public class CreateConfig {
     private int foregroundColor= Color.BLACK;
     private int backgroundColor=Color.WHITE;
 
-    private int iconMargin =3;
+    private int iconMargin =0;
     private int iconWidth=0;
-    private int iconCorner=3;
+    private int iconCorner=0;
+    private int iconImageCorner=0;
+
 
     private int iconForegroundColor=Color.TRANSPARENT;
     private int iconBackgroundColor=Color.WHITE;
@@ -78,6 +80,9 @@ public class CreateConfig {
     }
 
     public void setIconMargin(int iconMargin) {
+        if(iconMargin<0){
+            iconMargin=0;
+        }
         this.iconMargin = iconMargin;
     }
 
@@ -98,13 +103,24 @@ public class CreateConfig {
         this.iconCorner = iconCorner;
     }
 
+    public int getIconImageCorner() {
+        return iconImageCorner;
+    }
+
+    public void setUserIconImageCorner() {
+        this.iconImageCorner = -1;
+    }
+    public void setIconImageCorner(int iconImageCorner) {
+        this.iconImageCorner = iconImageCorner;
+    }
+
     public int getIconForegroundColor() {
         return iconForegroundColor;
     }
 
-    public void setIconForegroundColor(@ColorInt int iconForegroundColor) {
+ /*   public void setIconForegroundColor(@ColorInt int iconForegroundColor) {
         this.iconForegroundColor = iconForegroundColor;
-    }
+    }*/
 
     public int getIconBackgroundColor() {
         return iconBackgroundColor;
@@ -112,5 +128,9 @@ public class CreateConfig {
 
     public void setIconBackgroundColor(@ColorInt int iconBackgroundColor) {
         this.iconBackgroundColor = iconBackgroundColor;
+    }
+
+    public String getCharacterSet() {
+        return characterSet;
     }
 }
