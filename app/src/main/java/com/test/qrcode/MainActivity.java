@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
+//测试合并
     private void showMsg(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
