@@ -198,20 +198,21 @@
             android:text="Icon前景色"
             android:gravity="center"
             android:ems="5"
+            android:visibility="gone"
             />
         <TextView
             android:id="@+id/tvIconForegroundColor"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:background="#000000"
+            android:layout_marginRight="30dp"
+            android:visibility="gone"
             />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Icon背景色"
             android:gravity="center"
-            android:layout_marginLeft="30dp"
             android:ems="5"
             />
         <TextView
