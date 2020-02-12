@@ -3,6 +3,7 @@ package com.github.qrcode;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 /***
@@ -26,6 +27,8 @@ public class CreateConfig {
 
     private int iconForegroundColor=Color.TRANSPARENT;
     private int iconBackgroundColor=Color.WHITE;
+
+    private BarcodeFormat codeFormat=BarcodeFormat.QR_CODE;
 
     public int getMargin() {
         return margin;
@@ -132,5 +135,16 @@ public class CreateConfig {
 
     public String getCharacterSet() {
         return characterSet;
+    }
+
+    public BarcodeFormat getCodeFormat() {
+        return codeFormat;
+    }
+
+    public void setCodeFormat(BarcodeFormat codeFormat) {
+        if(codeFormat==null){
+            codeFormat=BarcodeFormat.QR_CODE;
+        }
+        this.codeFormat = codeFormat;
     }
 }
