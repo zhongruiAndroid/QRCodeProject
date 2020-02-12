@@ -5,12 +5,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -44,6 +47,8 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
     private CheckBox cbAddIcon;
     private SeekBar sbIconMargin;
     private SeekBar sbIconCorner;
+    private SeekBar sbImageCorner;
+    private SeekBar sbIconWidth;
     private TextView tvIconForegroundColor;
     private TextView tvIconBackgroundColor;
     private EditText etCodeContent;
@@ -55,12 +60,14 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
     private int backgroundColor = Color.WHITE;
     private int iconMargin;
     private int iconCorner;
+    private int imageCorner;
+    private int iconWidth;
     private int iconForegroundColor = Color.BLACK;
     private int iconBackgroundColor = Color.WHITE;
     private SelectColorDialog selectColorDialog;
 
 
-    private  ErrorCorrectionLevel errorCorrectionLevel=ErrorCorrectionLevel.H;
+    private ErrorCorrectionLevel errorCorrectionLevel = ErrorCorrectionLevel.H;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,19 +82,19 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rbL:
-                        errorCorrectionLevel=ErrorCorrectionLevel.L;
-                    break;
+                        errorCorrectionLevel = ErrorCorrectionLevel.L;
+                        break;
                     case R.id.rbM:
-                        errorCorrectionLevel=ErrorCorrectionLevel.M;
-                    break;
+                        errorCorrectionLevel = ErrorCorrectionLevel.M;
+                        break;
                     case R.id.rbQ:
-                        errorCorrectionLevel=ErrorCorrectionLevel.Q;
-                    break;
+                        errorCorrectionLevel = ErrorCorrectionLevel.Q;
+                        break;
                     case R.id.rbH:
-                        errorCorrectionLevel=ErrorCorrectionLevel.H;
-                    break;
+                        errorCorrectionLevel = ErrorCorrectionLevel.H;
+                        break;
                 }
             }
         });
@@ -111,6 +118,12 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
 
         sbIconCorner = findViewById(R.id.sbIconCorner);
         sbIconCorner.setOnSeekBarChangeListener(this);
+
+        sbImageCorner = findViewById(R.id.sbImageCorner);
+        sbImageCorner.setOnSeekBarChangeListener(this);
+
+        sbIconWidth = findViewById(R.id.sbIconWidth);
+        sbIconWidth.setOnSeekBarChangeListener(this);
 
 
         tvIconForegroundColor = findViewById(R.id.tvIconForegroundColor);
@@ -179,58 +192,116 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 String content = etCodeContent.getText().toString();
 
                 Bitmap logoBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.test);
-                Bitmap bitmap = makeCodeBitmap(content,logoBitmap);
+                Bitmap bitmap = makeCodeBitmap(content, logoBitmap);
                 ivCode.setImageBitmap(bitmap);
                 break;
         }
     }
 
-    private Bitmap makeCodeBitmap(String content,Bitmap logoBitmap  ){
+    private Bitmap makeCodeBitmap(String content, Bitmap logoBitmap) {
         int size = dp2px(this, 270);
-        Log.i("=====","====="+size);
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
 
-            CreateConfig createConfig=new CreateConfig();
-            createConfig.errorCorrection=errorCorrectionLevel;
+            CreateConfig createConfig = new CreateConfig();
+            createConfig.errorCorrection = errorCorrectionLevel;
             createConfig.setMargin(margin);
+            createConfig.setIconBackgroundColor(iconBackgroundColor);
+            createConfig.setIconForegroundColor(iconForegroundColor);
+            createConfig.setIconCorner(iconCorner);
+            createConfig.setIconImageCorner(imageCorner);
+            createConfig.setIconWidth(iconWidth);
+            createConfig.setIconMargin(iconMargin);
+
 //            createConfig.setQrVersion(3);
 
             Map<EncodeHintType, Object> HINTS = new EnumMap<>(EncodeHintType.class);
-            HINTS.put(EncodeHintType.CHARACTER_SET, createConfig.characterSet);
-            HINTS.put(EncodeHintType.ERROR_CORRECTION,createConfig.errorCorrection);
+            HINTS.put(EncodeHintType.CHARACTER_SET, createConfig.getCharacterSet());
+            HINTS.put(EncodeHintType.ERROR_CORRECTION, createConfig.errorCorrection);
             HINTS.put(EncodeHintType.MARGIN, createConfig.getMargin());
             HINTS.put(EncodeHintType.QR_VERSION, createConfig.getQrVersion());
 
-            BitMatrix encode = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, size, size,HINTS);
+            BitMatrix encode = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, size, size, HINTS);
             int[] pixels = new int[size * size];
             for (int y = 0; y < size; y++) {
                 for (int x = 0; x < size; x++) {
-                    if(encode.get(y,x)){
-                        pixels[y*size+x]=foregroundColor;
-                    }else{
-                        pixels[y*size+x]=backgroundColor;
+                    if (encode.get(y, x)) {
+                        pixels[y * size + x] = foregroundColor;
+                    } else {
+                        pixels[y * size + x] = backgroundColor;
                     }
                 }
             }
-            Bitmap bitmap = Bitmap.createBitmap(pixels, size, size, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(pixels, size, size, Bitmap.Config.ARGB_8888).copy(Bitmap.Config.ARGB_8888, true);
 
-            if(cbAddIcon.isChecked()&&logoBitmap!=null){
+            if (cbAddIcon.isChecked() && logoBitmap != null) {
 
-                if(createConfig.getIconWidth()<=0){
-                    int width = bitmap.getWidth();
-                    int height = bitmap.getHeight();
+                Canvas canvas = new Canvas(bitmap);
 
-                    int iconW = logoBitmap.getWidth();
-                    int iconH = logoBitmap.getHeight();
+                Matrix matrix = new Matrix();
 
-                    Canvas canvas=new Canvas(bitmap);
-                    canvas.drawBitmap(logoBitmap,(width-iconW)/2,(height-iconH)/2,null);
-                }else{
+                //二维码宽度和高度
+                int width = bitmap.getWidth();
+                int height = bitmap.getHeight();
 
+                /*不包含iconMargin的图片宽高*/
+                int imageW = logoBitmap.getWidth();
+//                int imageH = logoBitmap.getHeight();
+
+
+                /*贴在二维码上面的图片宽高*/
+                int iconW = createConfig.getIconWidth();
+                if (iconW <= 0) {
+                    iconW = imageW;
                 }
-                Bitmap icon=Bitmap.createBitmap(0,0, Bitmap.Config.ARGB_8888);
-                Drawable drawable =  ContextCompat.getDrawable(this, R.drawable.test);
+                imageW = iconW - iconMargin * 2;
+//                imageH = iconW - iconMargin * 2;
+
+                float scale = 1f * imageW / logoBitmap.getWidth();
+
+                int iconH = (int) (logoBitmap.getHeight() * scale + iconMargin * 2);
+
+                float iconLeft = (width - iconW) / 2;
+                float iconTop = (height - iconH) / 2;
+
+                matrix.setTranslate((width - logoBitmap.getWidth()) / 2, (height - logoBitmap.getHeight()) / 2);
+                matrix.postScale(scale, scale, width / 2, height / 2);
+
+                if (createConfig.getIconBackgroundColor() != Color.TRANSPARENT) {
+                    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    paint.setColor(createConfig.getIconBackgroundColor());
+                    paint.setStyle(Paint.Style.FILL);
+                    RectF rectF = new RectF(iconLeft, iconTop, iconLeft + iconW, iconTop + iconH);
+                    canvas.drawRoundRect(rectF, createConfig.getIconCorner(), createConfig.getIconCorner(), paint);
+                }
+
+                //如果小于零,图片圆角自适应icon圆角
+                if (createConfig.getIconImageCorner() < 0) {
+                    createConfig.setIconImageCorner(createConfig.getIconCorner() * imageW / iconW);
+                }
+                //如果图片也需要圆角
+                int iconImageCorner = createConfig.getIconImageCorner();
+                if (iconImageCorner > 0) {
+                    int count = canvas.saveLayer(iconLeft, iconTop, iconLeft + iconW, iconTop + iconH, null, Canvas.ALL_SAVE_FLAG);
+
+                    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//                    paint.setColor(Color.TRANSPARENT);
+                    Path roundPath = new Path();
+                    RectF rectF = new RectF(0, 0, logoBitmap.getWidth(), logoBitmap.getHeight());
+                    matrix.mapRect(rectF);
+                    roundPath.addRoundRect(rectF
+                            , createConfig.getIconImageCorner(), createConfig.getIconImageCorner()
+                            , Path.Direction.CW);
+
+                    canvas.drawPath(roundPath, paint);
+
+                    paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+                    canvas.drawBitmap(logoBitmap, matrix, paint);
+
+                    canvas.restoreToCount(count);
+                } else {
+                    canvas.drawBitmap(logoBitmap, matrix, null);
+                }
             }
             return bitmap;
         } catch (WriterException e) {
@@ -238,9 +309,11 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
             return null;
         }
     }
-    private int dp2px(Context context,int value){
-        return (int) (context.getResources().getDisplayMetrics().density*value);
+
+    private int dp2px(Context context, int value) {
+        return (int) (context.getResources().getDisplayMetrics().density * value);
     }
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
@@ -252,6 +325,12 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 break;
             case R.id.sbIconCorner:
                 iconCorner = progress;
+                break;
+            case R.id.sbImageCorner:
+                imageCorner = progress;
+                break;
+            case R.id.sbIconWidth:
+                iconWidth = progress;
                 break;
         }
     }
