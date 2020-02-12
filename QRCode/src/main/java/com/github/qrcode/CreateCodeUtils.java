@@ -53,7 +53,7 @@ public class CreateCodeUtils {
             codeWidth = 200;
         }
         if (codeHeight <= 0) {
-            codeHeight = 100;
+            codeHeight = 200;
         }
         if (createConfig == null) {
             createConfig = new CreateConfig();

@@ -71,13 +71,14 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
             BarcodeFormat.EAN_8,
             BarcodeFormat.EAN_13,
             BarcodeFormat.ITF,
-            BarcodeFormat.MAXICODE,
-            BarcodeFormat.PDF_417,
+//            BarcodeFormat.MAXICODE,
+//            BarcodeFormat.PDF_417,
             BarcodeFormat.QR_CODE,
 //            BarcodeFormat.RSS_14,
-            BarcodeFormat.RSS_EXPANDED,
-            BarcodeFormat.UPC_A,
-            BarcodeFormat.UPC_E};
+//            BarcodeFormat.RSS_EXPANDED,
+//            BarcodeFormat.UPC_A,
+//            BarcodeFormat.UPC_E
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,7 +228,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
 
 
                 CreateConfig createConfig = new CreateConfig();
-                createConfig.errorCorrection = 33;
+                createConfig.errorCorrection = ErrorCorrectionLevel.H;
                 createConfig.setBackgroundColor(backgroundColor);
                 createConfig.setForegroundColor(foregroundColor);
                 createConfig.setMargin(margin);
