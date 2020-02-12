@@ -234,4 +234,5 @@ public class LoopThread extends Thread {
     public void setCodeFormat(List<String> codeFormat) {
         this.codeFormat = codeFormat;
     }
+    //测试all
 }
