@@ -23,9 +23,32 @@ import java.util.Map;
  *   created by zhongrui on 2020/2/12
  */
 public class CreateCodeUtils {
-    public static Bitmap createQRCode(String content, Bitmap logoBitmap, int size, CreateConfig createConfig) {
-        if (size <= 0) {
-            size = 20;
+    public static Bitmap createQRCode(String content) {
+        return createQRCode(content, null, 800, new CreateConfig());
+    }
+    public static Bitmap createQRCode(String content, int size) {
+        return createQRCode(content, null, size, new CreateConfig());
+    }
+    public static Bitmap createQRCode(String content, Bitmap logoBitmap) {
+        return createQRCode(content, logoBitmap, 800, new CreateConfig());
+    }
+    public static Bitmap createQRCode(String content, Bitmap logoBitmap, int codeSize) {
+        return createQRCode(content, logoBitmap, codeSize, new CreateConfig());
+    }
+    public static Bitmap createQRCode(String content, CreateConfig createConfig) {
+        return createQRCode(content, null, 800, createConfig);
+    }
+
+    public static Bitmap createQRCode(String content, int codeSize, CreateConfig createConfig) {
+        return createQRCode(content, null, codeSize, createConfig);
+    }
+
+    public static Bitmap createQRCode(String content, Bitmap logoBitmap, int codeSize, CreateConfig createConfig) {
+        if(content==null){
+            content="";
+        }
+        if (codeSize <= 0) {
+            codeSize = 20;
         }
         if (createConfig == null) {
             createConfig = new CreateConfig();
@@ -49,18 +72,18 @@ public class CreateCodeUtils {
             HINTS.put(EncodeHintType.MARGIN, createConfig.getMargin());
             HINTS.put(EncodeHintType.QR_VERSION, createConfig.getQrVersion());
 
-            BitMatrix encode = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, size, size, HINTS);
-            int[] pixels = new int[size * size];
-            for (int y = 0; y < size; y++) {
-                for (int x = 0; x < size; x++) {
+            BitMatrix encode = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, codeSize, codeSize, HINTS);
+            int[] pixels = new int[codeSize * codeSize];
+            for (int y = 0; y < codeSize; y++) {
+                for (int x = 0; x < codeSize; x++) {
                     if (encode.get(y, x)) {
-                        pixels[y * size + x] = createConfig.getForegroundColor();
+                        pixels[y * codeSize + x] = createConfig.getForegroundColor();
                     } else {
-                        pixels[y * size + x] = createConfig.getBackgroundColor();
+                        pixels[y * codeSize + x] = createConfig.getBackgroundColor();
                     }
                 }
             }
-            Bitmap bitmap = Bitmap.createBitmap(pixels, size, size, Bitmap.Config.ARGB_8888).copy(Bitmap.Config.ARGB_8888, true);
+            Bitmap bitmap = Bitmap.createBitmap(pixels, codeSize, codeSize, Bitmap.Config.ARGB_8888).copy(Bitmap.Config.ARGB_8888, true);
 
             if (logoBitmap != null) {
 
