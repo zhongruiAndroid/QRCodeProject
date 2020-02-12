@@ -12,7 +12,7 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="90dp"
         >
 
         <LinearLayout
@@ -277,38 +277,40 @@
                     />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="二维码内容:"
-                    />
-
-                <EditText
-                    android:id="@+id/etCodeContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:hint="请输入二维码内容"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:text="android"
-                    android:textSize="13sp"
-                    />
-            </LinearLayout>
 
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="45dp"
+        >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="二维码内容:"
+            />
+
+        <EditText
+            android:id="@+id/etCodeContent"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="请输入二维码内容"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
+            android:text="android"
+            android:textSize="13sp"
+            />
+    </LinearLayout>
     <Button
         android:id="@+id/btMake"
         android:layout_width="match_parent"

@@ -74,7 +74,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
             BarcodeFormat.MAXICODE,
             BarcodeFormat.PDF_417,
             BarcodeFormat.QR_CODE,
-            BarcodeFormat.RSS_14,
+//            BarcodeFormat.RSS_14,
             BarcodeFormat.RSS_EXPANDED,
             BarcodeFormat.UPC_A,
             BarcodeFormat.UPC_E};
@@ -227,7 +227,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
 
 
                 CreateConfig createConfig = new CreateConfig();
-                createConfig.errorCorrection = errorCorrectionLevel;
+                createConfig.errorCorrection = 33;
                 createConfig.setBackgroundColor(backgroundColor);
                 createConfig.setForegroundColor(foregroundColor);
                 createConfig.setMargin(margin);
@@ -242,7 +242,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 if(cbAddIcon.isChecked()){
                       logoBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.test);
                 }
-                Bitmap bitmap = CreateCodeUtils.createCode(content, logoBitmap,size,size/2,createConfig);
+                Bitmap bitmap = CreateCodeUtils.createCode(content, logoBitmap,size,size,createConfig);
                 if(bitmap!=null){
                     ivCode.setImageBitmap(bitmap);
                 }else{

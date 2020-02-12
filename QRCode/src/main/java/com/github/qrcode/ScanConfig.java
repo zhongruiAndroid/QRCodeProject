@@ -64,9 +64,11 @@ public class ScanConfig {
         /*是否需要返回识别成功时的图片*/
         isNeed = getListener().needGetBitmapForSuccess();
 
-        codeFormat=new ArrayList<>();
-        codeFormat.add(CodeFormat.QR_CODE);
-
+        codeFormat=getListener().getCodeFormat();
+        if(codeFormat==null||codeFormat.size()==0){
+            codeFormat=new ArrayList<>();
+            codeFormat.add(CodeFormat.QR_CODE);
+        }
     }
 
     private int getScreenWidth(Activity activity) {
