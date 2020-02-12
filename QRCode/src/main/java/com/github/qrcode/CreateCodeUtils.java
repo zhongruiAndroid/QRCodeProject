@@ -76,7 +76,7 @@ public class CreateCodeUtils {
             int[] pixels = new int[codeSize * codeSize];
             for (int y = 0; y < codeSize; y++) {
                 for (int x = 0; x < codeSize; x++) {
-                    if (encode.get(y, x)) {
+                    if (encode.get(x, y)) {
                         pixels[y * codeSize + x] = createConfig.getForegroundColor();
                     } else {
                         pixels[y * codeSize + x] = createConfig.getBackgroundColor();
@@ -192,13 +192,17 @@ public class CreateCodeUtils {
             int[] pixels = new int[codeWidth * codeHeight];
             for (int y = 0; y < codeHeight; y++) {
                 for (int x = 0; x < codeWidth; x++) {
-                    if (encode.get(y, x)) {
+                    if (encode.get(x, y)) {
                         pixels[y * codeWidth + x] = createConfig.getForegroundColor();
                     } else {
                         pixels[y * codeWidth + x] = createConfig.getBackgroundColor();
                     }
                 }
             }
+
+
+
+
             Bitmap bitmap = Bitmap.createBitmap(pixels, codeWidth, codeHeight, Bitmap.Config.ARGB_8888).copy(Bitmap.Config.ARGB_8888, true);
 
             if (logoBitmap != null) {

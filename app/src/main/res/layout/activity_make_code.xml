@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,285 +9,311 @@
     android:orientation="vertical"
     tools:context=".MakeCodeActivity">
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
+        android:layout_marginBottom="45dp"
         >
 
-        <ImageView
-            android:id="@+id/ivCode"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            />
-
-        <RadioGroup
-            android:id="@+id/rg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="容错率"
-                />
-
-            <RadioButton
-                android:id="@+id/rbL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="L-7%"
-                />
-
-            <RadioButton
-                android:id="@+id/rbM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="M-15%"
-                />
-
-            <RadioButton
-                android:id="@+id/rbQ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Q-25%"
-                />
-
-            <RadioButton
-                android:id="@+id/rbH"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="H-30%"
-                />
-        </RadioGroup>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="margin值"
+            <ImageView
+                android:id="@+id/ivCode"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
                 />
-
-            <android.support.v7.widget.AppCompatSeekBar
-                android:id="@+id/sbMargin"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:gravity="center"
-                android:text="前景色"
-                />
-
-            <TextView
-                android:id="@+id/tvForegroundColor"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="#000000"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:ems="5"
-                android:gravity="center"
-                android:text="背景色"
-                />
-
-            <TextView
-                android:id="@+id/tvBackgroundColor"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="#ffffff"
-                />
-        </LinearLayout>
-
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/cbAddIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="添加icon"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="iconMargin值"
-                />
-
-            <android.support.v7.widget.AppCompatSeekBar
-                android:id="@+id/sbIconMargin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="icon圆角"
-                />
-
-            <android.support.v7.widget.AppCompatSeekBar
-                android:id="@+id/sbIconCorner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="image圆角"
-                />
-
-            <android.support.v7.widget.AppCompatSeekBar
-                android:id="@+id/sbImageCorner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="icon宽度"
-                />
-
-            <android.support.v7.widget.AppCompatSeekBar
-                android:id="@+id/sbIconWidth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="600"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:gravity="center"
-                android:text="Icon前景色"
-                android:visibility="gone"
-                />
-
-            <TextView
-                android:id="@+id/tvIconForegroundColor"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginRight="30dp"
-                android:background="#000000"
-                android:visibility="gone"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:gravity="center"
-                android:text="Icon背景色"
-                />
-
-            <TextView
-                android:id="@+id/tvIconBackgroundColor"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="#ffffff"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="二维码内容:"
-                />
-
-            <EditText
-                android:id="@+id/etCodeContent"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:ellipsize="end"
+                android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:hint="请输入二维码内容"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:maxLines="1"
-                android:text="android"
-                android:textSize="13sp"
-                />
-        </LinearLayout>
+                >
+                <RadioGroup
+                    android:id="@+id/rgFormat"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
 
-        <Button
-            android:id="@+id/btMake"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="生成二维码"
-            />
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+                </RadioGroup>
+
+            </HorizontalScrollView>
+            <RadioGroup
+                android:id="@+id/rg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="容错率"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="L-7%"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="M-15%"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbQ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Q-25%"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="H-30%"
+                    />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="margin值"
+                    />
+
+                <android.support.v7.widget.AppCompatSeekBar
+                    android:id="@+id/sbMargin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:text="前景色"
+                    />
+
+                <TextView
+                    android:id="@+id/tvForegroundColor"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="#000000"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:text="背景色"
+                    />
+
+                <TextView
+                    android:id="@+id/tvBackgroundColor"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="#ffffff"
+                    />
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/cbAddIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="添加icon"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="iconMargin值"
+                    />
+
+                <android.support.v7.widget.AppCompatSeekBar
+                    android:id="@+id/sbIconMargin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="icon圆角"
+                    />
+
+                <android.support.v7.widget.AppCompatSeekBar
+                    android:id="@+id/sbIconCorner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="image圆角"
+                    />
+
+                <android.support.v7.widget.AppCompatSeekBar
+                    android:id="@+id/sbImageCorner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="icon宽度"
+                    />
+
+                <android.support.v7.widget.AppCompatSeekBar
+                    android:id="@+id/sbIconWidth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="600"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:text="Icon前景色"
+                    android:visibility="gone"
+                    />
+
+                <TextView
+                    android:id="@+id/tvIconForegroundColor"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="30dp"
+                    android:background="#000000"
+                    android:visibility="gone"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:text="Icon背景色"
+                    />
+
+                <TextView
+                    android:id="@+id/tvIconBackgroundColor"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="#ffffff"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="二维码内容:"
+                    />
+
+                <EditText
+                    android:id="@+id/etCodeContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:hint="请输入二维码内容"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="android"
+                    android:textSize="13sp"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btMake"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:text="生成二维码"
+        />
+</FrameLayout>

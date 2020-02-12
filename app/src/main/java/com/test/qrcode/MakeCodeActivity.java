@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -22,11 +23,13 @@ import com.github.qrcode.CreateCodeUtils;
 import com.github.qrcode.CreateConfig;
 import com.github.selectcolordialog.SelectColorDialog;
 import com.github.selectcolordialog.SelectColorListener;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 public class MakeCodeActivity extends AppCompatActivity implements OnClickListener, SeekBar.OnSeekBarChangeListener {
     private ImageView ivCode;
     private RadioGroup rg;
+    private RadioGroup rgFormat;
     private SeekBar sbMargin;
     private TextView tvForegroundColor;
     private TextView tvBackgroundColor;
@@ -51,9 +54,30 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
     private int iconForegroundColor = Color.BLACK;
     private int iconBackgroundColor = Color.WHITE;
     private SelectColorDialog selectColorDialog;
+    private BarcodeFormat barcodeFormat =BarcodeFormat.QR_CODE;
 
 
     private ErrorCorrectionLevel errorCorrectionLevel = ErrorCorrectionLevel.H;
+
+
+
+    private BarcodeFormat[]barcodeFormats={
+            BarcodeFormat.AZTEC,
+            BarcodeFormat.CODABAR,
+            BarcodeFormat.CODE_39,
+            BarcodeFormat.CODE_93,
+            BarcodeFormat.CODE_128,
+            BarcodeFormat.DATA_MATRIX,
+            BarcodeFormat.EAN_8,
+            BarcodeFormat.EAN_13,
+            BarcodeFormat.ITF,
+            BarcodeFormat.MAXICODE,
+            BarcodeFormat.PDF_417,
+            BarcodeFormat.QR_CODE,
+            BarcodeFormat.RSS_14,
+            BarcodeFormat.RSS_EXPANDED,
+            BarcodeFormat.UPC_A,
+            BarcodeFormat.UPC_E};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +88,15 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
 
     private void initView() {
         ivCode = findViewById(R.id.ivCode);
+        rgFormat = findViewById(R.id.rgFormat);
+        rgFormat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                barcodeFormat=barcodeFormats[checkedId];
+            }
+        });
+        addFormat();
+
         rg = findViewById(R.id.rg);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -125,6 +158,20 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
 
 
         selectColorDialog = new SelectColorDialog(this);
+    }
+
+    private void addFormat() {
+        rgFormat.removeAllViews();
+        int size=barcodeFormats.length;
+        for (int i = 0; i < size; i++) {
+            RadioButton radioButton=new RadioButton(this);
+            radioButton.setText(barcodeFormats[i].toString());
+            radioButton.setId(i);
+            if(barcodeFormats[i]==BarcodeFormat.QR_CODE){
+                radioButton.setChecked(true);
+            }
+            rgFormat.addView(radioButton);
+        }
     }
 
     @Override
@@ -189,12 +236,13 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 createConfig.setIconImageCorner(imageCorner);
                 createConfig.setIconWidth(iconWidth);
                 createConfig.setIconMargin(iconMargin);
+                createConfig.setCodeFormat(barcodeFormat);
                 int size = dp2px(this, 270);
                 Bitmap logoBitmap=null;
                 if(cbAddIcon.isChecked()){
                       logoBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.test);
                 }
-                Bitmap bitmap = CreateCodeUtils.createQRCode(content, logoBitmap,size,createConfig);
+                Bitmap bitmap = CreateCodeUtils.createCode(content, logoBitmap,size/2,size,createConfig);
                 if(bitmap!=null){
                     ivCode.setImageBitmap(bitmap);
                 }else{
