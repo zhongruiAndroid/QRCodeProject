@@ -227,7 +227,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
 
 
                 CreateConfig createConfig = new CreateConfig();
-                createConfig.errorCorrection = 33;
+                createConfig.errorCorrection = errorCorrectionLevel;
                 createConfig.setBackgroundColor(backgroundColor);
                 createConfig.setForegroundColor(foregroundColor);
                 createConfig.setMargin(margin);
