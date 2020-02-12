@@ -76,7 +76,7 @@ public class CreateCodeUtils {
             int[] pixels = new int[codeSize * codeSize];
             for (int y = 0; y < codeSize; y++) {
                 for (int x = 0; x < codeSize; x++) {
-                    if (encode.get(y, x)) {
+                    if (encode.get(x, y)) {
                         pixels[y * codeSize + x] = createConfig.getForegroundColor();
                     } else {
                         pixels[y * codeSize + x] = createConfig.getBackgroundColor();
