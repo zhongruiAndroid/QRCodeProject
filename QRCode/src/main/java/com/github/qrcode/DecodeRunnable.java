@@ -92,7 +92,7 @@ public class DecodeRunnable implements Runnable {
 
         PlanarYUVLuminanceSource source = DecodeUtils.startBuildYUV(data, isVerticalScreen, screenWidth, screenHeight, encodeRect);
 
-        Result rawResult = DecodeUtils.startEncode(source, codeFormat);
+        Result rawResult = DecodeUtils.startDecode(source, codeFormat);
 
         if (rawResult != null) {
             Bitmap bitmap = null;

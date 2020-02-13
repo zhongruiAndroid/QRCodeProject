@@ -1,10 +1,12 @@
 package com.test.qrcode;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,11 +21,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.qrcode.DecodeUtils;
 import com.github.qrcode.EncodeUtils;
 import com.github.qrcode.CreateConfig;
 import com.github.selectcolordialog.SelectColorDialog;
 import com.github.selectcolordialog.SelectColorListener;
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Result;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 public class MakeCodeActivity extends AppCompatActivity implements OnClickListener, SeekBar.OnSeekBarChangeListener {
@@ -311,6 +315,21 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
     }
 
     private void decodeBitmap(Bitmap bitmap) {
+        Result result = DecodeUtils.startDecode(bitmap, barcodeFormat);
+        if(result==null){
+            Toast.makeText(this, "解析失败", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("解析结果");
+        builder.setMessage(result.getText());
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
 
