@@ -71,7 +71,10 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
             BarcodeFormat.EAN_8,
             BarcodeFormat.EAN_13,
 //            BarcodeFormat.ITF,
-            BarcodeFormat.PDF_417
+            BarcodeFormat.PDF_417,
+            BarcodeFormat.UPC_A,
+            BarcodeFormat.UPC_E,
+            BarcodeFormat.CODABAR
     };
 
     @Override
@@ -187,6 +190,15 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                     case QR_CODE:
                         etCodeContent.setEnabled(true);
                         etCodeContent.setText("QR_CODE_可以有中文");
+                        break;
+                    case UPC_A:
+                        etCodeContent.setText("123456789012");
+                        break;
+                    case UPC_E:
+                        etCodeContent.setText("1234567");
+                        break;
+                    case CODABAR:
+                        etCodeContent.setText("1234567");
                         break;
 
                 }

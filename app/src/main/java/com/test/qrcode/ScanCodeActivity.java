@@ -189,6 +189,10 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
         list.add(CodeFormat.MAXICODE);
         list.add(CodeFormat.PDF_417);
         list.add(CodeFormat.RSS_14);
+        list.add(CodeFormat.RSS_EXPANDED);
+        list.add(CodeFormat.UPC_A);
+        list.add(CodeFormat.UPC_E);
+        list.add(CodeFormat.UPC_EAN_EXTENSION);
 
         /*返回null默认为CodeFormat.QR_CODE:常用的二维条码*/
         /*如果没有其他格式需求，建议返回null*/
