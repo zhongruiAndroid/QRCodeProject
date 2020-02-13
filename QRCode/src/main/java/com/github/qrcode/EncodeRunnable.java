@@ -3,6 +3,7 @@ package com.github.qrcode;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.PlanarYUVLuminanceSource;
@@ -18,7 +19,7 @@ public class EncodeRunnable implements Runnable {
     private int screenHeight;
     private boolean needGetScanBitmap;
     private Rect encodeRect;
-    private List<String> codeFormat;
+    private List<BarcodeFormat> codeFormat;
     private boolean isVerticalScreen;
 
     public void setVerticalScreen(boolean isVerticalScreen) {
@@ -71,7 +72,7 @@ public class EncodeRunnable implements Runnable {
         this.screenHeight = screenH;
     }
 
-    public void setCodeFormat(List<String> codeFormat) {
+    public void setCodeFormat(List<BarcodeFormat> codeFormat) {
         this.codeFormat = codeFormat;
     }
 

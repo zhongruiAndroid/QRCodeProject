@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface QRCodeListener {
     boolean needGetBitmapForSuccess();
     int getMaxFrameNum();
     void onSuccess(Result rawResult, Bitmap bitmap);
-    List<String> getCodeFormat();
+    List<BarcodeFormat> getCodeFormat();
 }

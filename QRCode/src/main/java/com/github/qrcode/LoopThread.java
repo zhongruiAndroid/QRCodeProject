@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class LoopThread extends Thread {
     private int screenHeight;
     private Rect scanRect;
     private boolean isNeedGetScanBitmap;
-    private List<String> codeFormat;
+    private List<BarcodeFormat> codeFormat;
     private int maxSize=MAX_SIZE;
 
     public LoopThread(final int screenWidth, final int screenHeight, int maxFrameNum, final Rect scanRect, final boolean isNeedGetScanBitmap) {
@@ -231,7 +232,7 @@ public class LoopThread extends Thread {
     public void setQRCodeListener(QRCodeListener listener) {
         this.qrCodeListener = listener;
     }
-    public void setCodeFormat(List<String> codeFormat) {
+    public void setCodeFormat(List<BarcodeFormat> codeFormat) {
         this.codeFormat = codeFormat;
     }
     //测试code322222

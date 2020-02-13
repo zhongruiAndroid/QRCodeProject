@@ -42,6 +42,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
     private TextView tvIconBackgroundColor;
     private EditText etCodeContent;
     private Button btMake;
+    private Button btDecode;
 
 
     private int margin;
@@ -54,14 +55,13 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
     private int iconForegroundColor = Color.BLACK;
     private int iconBackgroundColor = Color.WHITE;
     private SelectColorDialog selectColorDialog;
-    private BarcodeFormat barcodeFormat =BarcodeFormat.QR_CODE;
+    private BarcodeFormat barcodeFormat = BarcodeFormat.QR_CODE;
 
 
     private ErrorCorrectionLevel errorCorrectionLevel = ErrorCorrectionLevel.H;
 
 
-
-    private BarcodeFormat[]barcodeFormats={
+    private BarcodeFormat[] barcodeFormats = {
             BarcodeFormat.QR_CODE,
             BarcodeFormat.AZTEC,
             BarcodeFormat.CODE_39,
@@ -147,6 +147,9 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
         btMake = findViewById(R.id.btMake);
         btMake.setOnClickListener(this);
 
+        btDecode = findViewById(R.id.btDecode);
+        btDecode.setOnClickListener(this);
+
 
         selectColorDialog = new SelectColorDialog(this);
 
@@ -155,9 +158,9 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
         rgFormat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                barcodeFormat=barcodeFormats[checkedId];
+                barcodeFormat = barcodeFormats[checkedId];
                 etCodeContent.setEnabled(false);
-                switch (barcodeFormat){
+                switch (barcodeFormat) {
                     case AZTEC:
                         etCodeContent.setEnabled(true);
                         etCodeContent.setText("AZTEC_123456");
@@ -209,12 +212,12 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
 
     private void addFormat() {
         rgFormat.removeAllViews();
-        int size=barcodeFormats.length;
+        int size = barcodeFormats.length;
         for (int i = 0; i < size; i++) {
-            RadioButton radioButton=new RadioButton(this);
+            RadioButton radioButton = new RadioButton(this);
             radioButton.setText(barcodeFormats[i].toString());
             radioButton.setId(i);
-            if(barcodeFormats[i]==BarcodeFormat.QR_CODE){
+            if (barcodeFormats[i] == BarcodeFormat.QR_CODE) {
                 radioButton.setChecked(true);
             }
             rgFormat.addView(radioButton);
@@ -272,7 +275,6 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 String content = etCodeContent.getText().toString();
 
 
-
                 CreateConfig createConfig = new CreateConfig();
                 createConfig.errorCorrection = ErrorCorrectionLevel.H;
                 createConfig.setBackgroundColor(backgroundColor);
@@ -285,17 +287,21 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 createConfig.setIconMargin(iconMargin);
                 createConfig.setCodeFormat(barcodeFormat);
                 int size = dp2px(this, 270);
-                Bitmap logoBitmap=null;
-                if(cbAddIcon.isChecked()){
-                      logoBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.test);
+                Bitmap logoBitmap = null;
+                if (cbAddIcon.isChecked()) {
+                    logoBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.test);
                 }
-                Bitmap bitmap = CreateCodeUtils.createCode(content, logoBitmap,size,size,createConfig);
-                if(bitmap!=null){
+                Bitmap bitmap = CreateCodeUtils.createCode(content, logoBitmap, size, size, createConfig);
+                if (bitmap != null) {
                     ivCode.setImageBitmap(bitmap);
-                }else{
+                } else {
                     Toast.makeText(this, "二维码生成失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.btDecode:
+
+                break;
+
         }
     }
 
