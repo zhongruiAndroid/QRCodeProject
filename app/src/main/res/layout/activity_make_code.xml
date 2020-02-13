@@ -29,65 +29,82 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 />
+
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 >
+
                 <RadioGroup
                     android:id="@+id/rgFormat"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     >
 
                 </RadioGroup>
 
             </HorizontalScrollView>
-            <RadioGroup
-                android:id="@+id/rg"
+
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 >
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/rg"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="容错率"
-                    />
+                    android:orientation="horizontal"
+                    >
 
-                <RadioButton
-                    android:id="@+id/rbL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="L-7%"
-                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="QRCode容错率"
+                        android:textSize="12sp"
+                        />
 
-                <RadioButton
-                    android:id="@+id/rbM"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="M-15%"
-                    />
+                    <RadioButton
+                        android:id="@+id/rbL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="L-7%"
+                        android:textSize="13sp"
+                        />
 
-                <RadioButton
-                    android:id="@+id/rbQ"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Q-25%"
-                    />
+                    <RadioButton
+                        android:id="@+id/rbM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="M-15%"
+                        android:textSize="13sp"
+                        />
 
-                <RadioButton
-                    android:id="@+id/rbH"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="H-30%"
-                    />
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/rbQ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Q-25%"
+                        android:textSize="13sp"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/rbH"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="H-30%"
+                        android:textSize="13sp"
+                        />
+                </RadioGroup>
+
+            </HorizontalScrollView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -278,17 +295,16 @@
             </LinearLayout>
 
 
-
-
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
         android:layout_height="45dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="45dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         >
 
         <TextView
@@ -311,11 +327,27 @@
             android:textSize="13sp"
             />
     </LinearLayout>
-    <Button
-        android:id="@+id/btMake"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_gravity="bottom"
-        android:text="生成二维码"
-        />
+        >
+        <Button
+            android:id="@+id/btMake"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="45dp"
+            android:text="生成二维码"
+            />
+        <Button
+            android:id="@+id/btDecode"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="45dp"
+            android:text="解析生成的二维码"
+            />
+    </LinearLayout>
+
 </FrameLayout>
