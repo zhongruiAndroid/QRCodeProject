@@ -19,7 +19,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.qrcode.CreateCodeUtils;
+import com.github.qrcode.EncodeUtils;
 import com.github.qrcode.CreateConfig;
 import com.github.selectcolordialog.SelectColorDialog;
 import com.github.selectcolordialog.SelectColorListener;
@@ -76,6 +76,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
             BarcodeFormat.UPC_E,
             BarcodeFormat.CODABAR
     };
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -291,7 +292,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 if (cbAddIcon.isChecked()) {
                     logoBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.test);
                 }
-                Bitmap bitmap = CreateCodeUtils.createCode(content, logoBitmap, size, size, createConfig);
+                bitmap = EncodeUtils.createCode(content, logoBitmap, size, size, createConfig);
                 if (bitmap != null) {
                     ivCode.setImageBitmap(bitmap);
                 } else {
@@ -299,10 +300,17 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 }
                 break;
             case R.id.btDecode:
-
+                if(bitmap==null){
+                    Toast.makeText(this, "请生成二维码再试", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                decodeBitmap(bitmap);
                 break;
 
         }
+    }
+
+    private void decodeBitmap(Bitmap bitmap) {
     }
 
 

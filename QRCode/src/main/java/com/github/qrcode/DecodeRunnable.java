@@ -9,8 +9,8 @@ import com.google.zxing.Result;
 
 import java.util.List;
 
-public class EncodeRunnable implements Runnable {
-    private EncodeSuccessListener listener;
+public class DecodeRunnable implements Runnable {
+    private DecodeSuccessListener listener;
     private byte[] data;
     private int screenWidth;
     private int screenHeight;
@@ -23,7 +23,7 @@ public class EncodeRunnable implements Runnable {
         this.isVerticalScreen = isVerticalScreen;
     }
 
-    public void setListener(EncodeSuccessListener listener) {
+    public void setListener(DecodeSuccessListener listener) {
         this.listener = listener;
     }
 
@@ -46,9 +46,9 @@ public class EncodeRunnable implements Runnable {
         this.encodeRect = encodeRect;
     }
 
-    public EncodeSuccessListener getListener() {
+    public DecodeSuccessListener getListener() {
         if (listener == null) {
-            listener = new EncodeSuccessListener() {
+            listener = new DecodeSuccessListener() {
                 @Override
                 public void onSuccess(Result rawResult, Bitmap bitmap) {
 
@@ -63,7 +63,7 @@ public class EncodeRunnable implements Runnable {
         return listener;
     }
 
-    public EncodeRunnable(byte[] data, int screenW, int screenH) {
+    public DecodeRunnable(byte[] data, int screenW, int screenH) {
         this.data = data;
         this.screenWidth = screenW;
         this.screenHeight = screenH;
@@ -90,14 +90,14 @@ public class EncodeRunnable implements Runnable {
         }
         Rect encodeRect = getEncodeRect();
 
-        PlanarYUVLuminanceSource source = EncodeUtils.startBuildYUV(data, isVerticalScreen, screenWidth, screenHeight, encodeRect);
+        PlanarYUVLuminanceSource source = DecodeUtils.startBuildYUV(data, isVerticalScreen, screenWidth, screenHeight, encodeRect);
 
-        Result rawResult = EncodeUtils.startEncode(source, codeFormat);
+        Result rawResult = DecodeUtils.startEncode(source, codeFormat);
 
         if (rawResult != null) {
             Bitmap bitmap = null;
             if (isNeedGetScanBitmap()) {
-                bitmap = EncodeUtils.getScanBitmap(source);
+                bitmap = DecodeUtils.getScanBitmap(source);
             }
             getListener().onSuccess(rawResult, bitmap);
         } else {

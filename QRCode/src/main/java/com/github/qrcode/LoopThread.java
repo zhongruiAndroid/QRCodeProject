@@ -57,12 +57,12 @@ public class LoopThread extends Thread {
         this.isVerticalScreen=isVerticalScreen;
     }
     public void startEncode(byte[] data, int screenW, int screenH, Rect scanRect, boolean isNeedGetScanBitmap) {
-        EncodeRunnable encodeRunnable = new EncodeRunnable(data, screenW, screenH);
-        encodeRunnable.setCodeFormat(codeFormat);
-        encodeRunnable.setVerticalScreen(isVerticalScreen);
-        encodeRunnable.setEncodeRect(scanRect);
-        encodeRunnable.setNeedGetScanBitmap(isNeedGetScanBitmap);
-        encodeRunnable.setListener(new EncodeSuccessListener() {
+        DecodeRunnable decodeRunnable = new DecodeRunnable(data, screenW, screenH);
+        decodeRunnable.setCodeFormat(codeFormat);
+        decodeRunnable.setVerticalScreen(isVerticalScreen);
+        decodeRunnable.setEncodeRect(scanRect);
+        decodeRunnable.setNeedGetScanBitmap(isNeedGetScanBitmap);
+        decodeRunnable.setListener(new DecodeSuccessListener() {
             @Override
             public void onSuccess(final Result rawResult, final Bitmap bitmap) {
                 reduceFrame();
@@ -76,7 +76,7 @@ public class LoopThread extends Thread {
         });
         if (executors != null) {
             try {
-                executors.execute(encodeRunnable);
+                executors.execute(decodeRunnable);
             } catch (Exception e) {
                 e.printStackTrace();
             }
