@@ -62,22 +62,16 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
 
 
     private BarcodeFormat[]barcodeFormats={
+            BarcodeFormat.QR_CODE,
             BarcodeFormat.AZTEC,
-            BarcodeFormat.CODABAR,
             BarcodeFormat.CODE_39,
             BarcodeFormat.CODE_93,
             BarcodeFormat.CODE_128,
             BarcodeFormat.DATA_MATRIX,
             BarcodeFormat.EAN_8,
             BarcodeFormat.EAN_13,
-            BarcodeFormat.ITF,
-//            BarcodeFormat.MAXICODE,
-//            BarcodeFormat.PDF_417,
-            BarcodeFormat.QR_CODE,
-//            BarcodeFormat.RSS_14,
-//            BarcodeFormat.RSS_EXPANDED,
-//            BarcodeFormat.UPC_A,
-//            BarcodeFormat.UPC_E
+//            BarcodeFormat.ITF,
+            BarcodeFormat.PDF_417
     };
 
     @Override
@@ -89,14 +83,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
 
     private void initView() {
         ivCode = findViewById(R.id.ivCode);
-        rgFormat = findViewById(R.id.rgFormat);
-        rgFormat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                barcodeFormat=barcodeFormats[checkedId];
-            }
-        });
-        addFormat();
+
 
         rg = findViewById(R.id.rg);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -159,6 +146,53 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
 
 
         selectColorDialog = new SelectColorDialog(this);
+
+
+        rgFormat = findViewById(R.id.rgFormat);
+        rgFormat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                barcodeFormat=barcodeFormats[checkedId];
+                etCodeContent.setEnabled(false);
+                switch (barcodeFormat){
+                    case AZTEC:
+                        etCodeContent.setEnabled(true);
+                        etCodeContent.setText("AZTEC_123456");
+                        break;
+                    case CODE_39:
+                        etCodeContent.setText("CODE39");
+                        break;
+                    case CODE_93:
+                        etCodeContent.setText("CODE_93");
+                        break;
+                    case CODE_128:
+                        etCodeContent.setText("CODE_128");
+                        break;
+                    case DATA_MATRIX:
+                        etCodeContent.setText("DATA_MATRIX");
+                        break;
+                    case EAN_8:
+                        etCodeContent.setText("1234567");
+                        break;
+                    case EAN_13:
+                        etCodeContent.setText("123456789101");
+                        break;
+                    case ITF:
+                        etCodeContent.setText("12");
+                        break;
+                    case PDF_417:
+                        etCodeContent.setEnabled(true);
+                        etCodeContent.setText("PDF_417_可以有中文");
+                        break;
+                    case QR_CODE:
+                        etCodeContent.setEnabled(true);
+                        etCodeContent.setText("QR_CODE_可以有中文");
+                        break;
+
+                }
+            }
+        });
+        addFormat();
     }
 
     private void addFormat() {

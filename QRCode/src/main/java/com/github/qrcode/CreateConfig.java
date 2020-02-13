@@ -11,6 +11,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
  */
 public class CreateConfig {
     public ErrorCorrectionLevel errorCorrection= ErrorCorrectionLevel.H;
+    private int pdfCorrection=0;
     private String characterSet="utf-8";
     private int margin=3;
     private int qrVersion=3;
@@ -146,5 +147,18 @@ public class CreateConfig {
             codeFormat=BarcodeFormat.QR_CODE;
         }
         this.codeFormat = codeFormat;
+    }
+
+    public int getPdfCorrection() {
+        return pdfCorrection;
+    }
+
+    public void setPdfCorrection(int pdfCorrection) {
+        if(pdfCorrection<0){
+            pdfCorrection=0;
+        }else if(pdfCorrection>8){
+            pdfCorrection=8;
+        }
+        this.pdfCorrection = pdfCorrection;
     }
 }

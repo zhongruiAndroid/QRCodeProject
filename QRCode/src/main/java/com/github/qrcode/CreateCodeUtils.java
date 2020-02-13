@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -25,15 +26,19 @@ public class CreateCodeUtils {
     public static Bitmap createCode(String content) {
         return createCode(content, null, 800, new CreateConfig());
     }
+
     public static Bitmap createCode(String content, int size) {
         return createCode(content, null, size, new CreateConfig());
     }
+
     public static Bitmap createCode(String content, Bitmap logoBitmap) {
         return createCode(content, logoBitmap, 800, new CreateConfig());
     }
+
     public static Bitmap createCode(String content, Bitmap logoBitmap, int codeSize) {
         return createCode(content, logoBitmap, codeSize, new CreateConfig());
     }
+
     public static Bitmap createCode(String content, CreateConfig createConfig) {
         return createCode(content, null, 800, createConfig);
     }
@@ -43,11 +48,12 @@ public class CreateCodeUtils {
     }
 
     public static Bitmap createCode(String content, Bitmap logoBitmap, int codeSize, CreateConfig createConfig) {
-        return createCode(content,logoBitmap,codeSize,codeSize,createConfig);
+        return createCode(content, logoBitmap, codeSize, codeSize, createConfig);
     }
+
     public static Bitmap createCode(String content, Bitmap logoBitmap, int codeWidth, int codeHeight, CreateConfig createConfig) {
-        if(content==null){
-            content="";
+        if (content == null) {
+            content = "";
         }
         if (codeWidth <= 0) {
             codeWidth = 200;
@@ -58,26 +64,24 @@ public class CreateCodeUtils {
         if (createConfig == null) {
             createConfig = new CreateConfig();
         }
-//        int size = dp2px(this, 270);
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-//            createConfig.errorCorrection = errorCorrectionLevel;
-//            createConfig.setMargin(margin);
-//            createConfig.setIconBackgroundColor(iconBackgroundColor);
-//            createConfig.setIconCorner(iconCorner);
-//            createConfig.setIconImageCorner(imageCorner);
-//            createConfig.setIconWidth(iconWidth);
-//            createConfig.setIconMargin(iconMargin);
-
-//            createConfig.setQrVersion(3);
-
             Map<EncodeHintType, Object> HINTS = new EnumMap<>(EncodeHintType.class);
             HINTS.put(EncodeHintType.CHARACTER_SET, createConfig.getCharacterSet());
-            HINTS.put(EncodeHintType.ERROR_CORRECTION, createConfig.errorCorrection);
+            if(createConfig.getCodeFormat()==BarcodeFormat.AZTEC){
+                HINTS.put(EncodeHintType.ERROR_CORRECTION, 33);
+            }else if(createConfig.getCodeFormat()==BarcodeFormat.PDF_417){
+                HINTS.put(EncodeHintType.ERROR_CORRECTION, createConfig.getPdfCorrection());
+            }else{
+                HINTS.put(EncodeHintType.ERROR_CORRECTION, createConfig.errorCorrection);
+            }
             HINTS.put(EncodeHintType.MARGIN, createConfig.getMargin());
             HINTS.put(EncodeHintType.QR_VERSION, createConfig.getQrVersion());
-
             BitMatrix encode = multiFormatWriter.encode(content, createConfig.getCodeFormat(), codeWidth, codeHeight, HINTS);
+            if(createConfig.getCodeFormat()==BarcodeFormat.PDF_417||createConfig.getCodeFormat()==BarcodeFormat.DATA_MATRIX){
+                codeWidth = encode.getWidth();
+                codeHeight = encode.getHeight();
+            }
             int[] pixels = new int[codeWidth * codeHeight];
             for (int y = 0; y < codeHeight; y++) {
                 for (int x = 0; x < codeWidth; x++) {
