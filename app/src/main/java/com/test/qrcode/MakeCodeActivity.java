@@ -21,14 +21,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.qrcode.CreateConfig;
 import com.github.qrcode.DecodeUtils;
 import com.github.qrcode.EncodeUtils;
-import com.github.qrcode.CreateConfig;
 import com.github.selectcolordialog.SelectColorDialog;
 import com.github.selectcolordialog.SelectColorListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MakeCodeActivity extends AppCompatActivity implements OnClickListener, SeekBar.OnSeekBarChangeListener {
     private ImageView ivCode;
@@ -304,7 +307,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 }
                 break;
             case R.id.btDecode:
-                if(bitmap==null){
+                if (bitmap == null) {
                     Toast.makeText(this, "请生成二维码再试", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -315,12 +318,30 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
     }
 
     private void decodeBitmap(Bitmap bitmap) {
-        Result result = DecodeUtils.startDecode(bitmap, barcodeFormat);
-        if(result==null){
+        List<BarcodeFormat> list = new ArrayList<>();
+        list.add(BarcodeFormat.QR_CODE);
+        list.add(BarcodeFormat.AZTEC);
+        list.add(BarcodeFormat.CODE_39);
+        list.add(BarcodeFormat.CODE_93);
+        list.add(BarcodeFormat.CODE_128);
+        list.add(BarcodeFormat.DATA_MATRIX);
+        list.add(BarcodeFormat.EAN_8);
+        list.add(BarcodeFormat.EAN_13);
+        list.add(BarcodeFormat.ITF);
+        list.add(BarcodeFormat.PDF_417);
+        list.add(BarcodeFormat.UPC_A);
+        list.add(BarcodeFormat.UPC_E);
+        list.add(BarcodeFormat.CODABAR);
+
+        //Result result = DecodeUtils.startDecode(bitmap, barcodeFormat);
+        /*解析某个或者多个二维码*/
+        Result result = DecodeUtils.startDecode(bitmap, list);
+
+        if (result == null) {
             Toast.makeText(this, "解析失败", Toast.LENGTH_SHORT).show();
             return;
         }
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("解析结果");
         builder.setMessage(result.getText());
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
