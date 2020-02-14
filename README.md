@@ -73,14 +73,14 @@ public Rect getScanRect() {
     return codeScanView.getScanRectForWindow();
 }
 @Override
+public int getMaxFrameNum() {
+    /*同时解码的数量，返回0默认为6，最大值不会超过20，建议返回0或者6*/
+    return 6;
+}
+@Override
 public boolean needGetBitmapForSuccess() {
     /*如果需要扫描成功时的二维码可以返回true，如果没这个需求，建议返回false*/
     return true;
-}
-@Override
-public int getMaxFrameNum() {
-    /*同时解码的数量，返回0默认为6，最大值不会超过20，建议返回0或者6*/
-    return 5;
 }
 @Override
 public void onSuccess(Result rawResult, Bitmap bitmap) {
@@ -108,7 +108,7 @@ public List<String> getCodeFormat() {
     list.add(CodeFormat.RSS_14);
 
     /*返回null默认为CodeFormat.QR_CODE:常用的二维条码*/
-    /*如果没有其他格式需求，建议返回null*/
+    /*如果只需要解析QR_CODE没有其他格式需求，建议返回null*/
     return null;
 }
 
