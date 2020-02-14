@@ -69,8 +69,8 @@ public Activity getAct() {
 @Override
 public Rect getScanRect() {
     /*扫描框所识别的范围,如果返回null,则识别整个SurfaceView范围*/
-    /*CodeScanView为默认提供的一个自定义view，下面详细说明使用方法,getScanRectForWindow获取扫描范围*/
-    return codeScanView.getScanRectForWindow();
+    /*CodeScanView为默认提供的一个自定义view，下面详细说明使用方法,getScanRectForView获取扫描范围*/
+    return codeScanView.getScanRectForView();
 }
 @Override
 public int getMaxFrameNum() {
@@ -195,5 +195,16 @@ cameraManager.stopDetect();
 ```java
 /*建议SurfaceView和CodeScanView放在FrameLayout中，layout_width、layout_height、layout_margin属性一定要保持一致*/
 /*否则扫描范围就会存在误差*/
-codeScanView.getScanRectForWindow()
+
+/*扫描框范围*/
+codeScanView.getScanRectForView()
+/*暂停扫描动画*/
+codeScanView.onPause();
+/*开始扫描动画*/
+codeScanView.onResume();
+```
+```java
+/*扫描成功之后可以自行添加震动效果*/
+Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+vibrator.vibrate(100);
 ```
