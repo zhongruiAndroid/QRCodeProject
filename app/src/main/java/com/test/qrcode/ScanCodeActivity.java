@@ -29,7 +29,6 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
 
     private SurfaceView svPreview;
     private CodeScanView csv;
-    private SurfaceHolder surfaceHolder;
     private CameraManager cameraManager;
 
     private Button btOpenLight;
@@ -74,7 +73,7 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
         CameraManager.setFullSurfaceView(this, svPreview);
 
         /*常规操作*/
-        surfaceHolder = svPreview.getHolder();
+        SurfaceHolder surfaceHolder = svPreview.getHolder();
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
