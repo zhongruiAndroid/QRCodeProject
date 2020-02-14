@@ -134,6 +134,9 @@ public class LoopThread extends Thread {
     }
 
     public void offer(byte[] data) {
+        if(atomicBoolean==null||atomicBoolean.get()){
+            return;
+        }
         if (data!=null&&frameQueue != null&&getFrameNum()<maxSize) {
             frameQueue.offer(data);
             addFrame();
@@ -235,5 +238,5 @@ public class LoopThread extends Thread {
     public void setCodeFormat(List<BarcodeFormat> codeFormat) {
         this.codeFormat = codeFormat;
     }
-    //测试code322222
+
 }
