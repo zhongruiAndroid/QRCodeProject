@@ -7,7 +7,8 @@
 
 ##### 第一步(Activity实现QRCodeListener 接口)
 ```java
-
+private CameraManager cameraManager;
+private CodeScanView codeScanView;
 public class YourActivity extends AppCompatActivity implements QRCodeListener {
 
 }
@@ -17,24 +18,26 @@ public class YourActivity extends AppCompatActivity implements QRCodeListener {
 /*找到布局中的SurfaceView*/
 SurfaceView surfaceView = findViewById(R.id.surfaceView);
 /*扫描框view*/
-CodeScanView codeScanView= findViewById(R.id.codeScanView);
+codeScanView = findViewById(R.id.codeScanView);
 
- /*实例化CameraManager*/
-CameraManager cameraManager = new CameraManager(this);
+/*实例化CameraManager*/
+cameraManager = new CameraManager(this);
 /*给surfaceView的宽高设置为手机分辨率大小,防止预览变形*/
-CameraManager.setFullSurfaceView(this,surfaceView);
+CameraManager.setFullSurfaceView(this, surfaceView);
 
 /*常规操作*/
-surfaceHolder = surfaceView.getHolder();
+SurfaceHolder surfaceHolder = surfaceView.getHolder();
 surfaceHolder.addCallback(new SurfaceHolder.Callback() {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-	    //启用相机并且设置预览界面
-        cameraManager.surfaceCreated(context,holder);
+        //启用相机并且设置预览界面
+        cameraManager.surfaceCreated(TestActivity.this, holder);
     }
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
+
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         cameraManager.surfaceDestroyed();
@@ -86,6 +89,23 @@ public boolean needGetBitmapForSuccess() {
 public void onSuccess(Result rawResult, Bitmap bitmap) {
     /*rawResult:扫描结果，rawResult.getText()获取文字内容*/
     /*bitmap:扫描成功时的图片，needGetBitmapForSuccess返回false时为空*/
+
+
+    /*当解析成功，会自动stopDetect，如需继续检测解析，手动调用startDetect方法*/
+
+    /*如果不跳转页面，在当前页面弹窗处理结果*/
+
+    /*******窗口显示时*******/
+    /*暂停画面解析*/
+    cameraManager.stopDetect();
+    /*暂停扫描动画*/
+    codeScanView.onPause();
+
+    /*******如果窗口消失*******/
+    /*继续检测解析*/
+    cameraManager.startDetect();
+    /*继续动画*/
+    codeScanView.onResume();
 }
 
 @Override

@@ -109,7 +109,7 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
 
     @Override
     public Rect getScanRect() {
-        return csv.getScanRectForWindow();
+        return csv.getScanRectForView();
 //        return null;
     }
     @Override
@@ -121,7 +121,7 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
         return 6;
     }
 
-    private boolean jumpAct = false;
+    private boolean jumpAct = true;
 
     @Override
     public void onSuccess(Result rawResult, Bitmap bitmap) {
