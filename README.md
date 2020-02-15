@@ -1,4 +1,5 @@
 ## 二维码扫描(仅QR_CODE格式,库体积较小)
+### 该库基于zxing源码小改,所以不需要额外集成zxing了
 
 <img src="https://github.com/zhongruiAndroid/QRCodeProject/blob/develop_qrcode/screen/qrcode.jpg" alt="image"  width="auto" height="640"> <img src="https://github.com/zhongruiAndroid/QRCodeProject/blob/develop_qrcode/screen/showview.jpg" alt="image"  width="auto" height="640"> 
 
