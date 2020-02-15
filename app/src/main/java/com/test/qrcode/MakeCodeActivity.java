@@ -282,17 +282,27 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 }
                 String content = etCodeContent.getText().toString();
 
-
+                /*生成二维码对应的参数*/
                 CreateConfig createConfig = new CreateConfig();
+                /*生成qrcode时，二维码的容错率，默认ErrorCorrectionLevel.H(30%)*/
                 createConfig.errorCorrection = ErrorCorrectionLevel.H;
+                /*二维码的背景色，默认白色*/
                 createConfig.setBackgroundColor(backgroundColor);
+                /*二维码前景色，默认黑色*/
                 createConfig.setForegroundColor(foregroundColor);
+                /*二维码内容距离二维码图片的边距*/
                 createConfig.setMargin(margin);
+                /*给二维码添加图片时的背景色*/
                 createConfig.setIconBackgroundColor(iconBackgroundColor);
+                /*给二维码添加图片时生成icon的圆角*/
                 createConfig.setIconCorner(iconCorner);
+                /*给二维码添加图片的圆角*/
                 createConfig.setIconImageCorner(imageCorner);
+                /*给二维码添加图片生成出来的icon宽度*/
                 createConfig.setIconWidth(iconWidth);
+                /*给二维码添加图片生成出来的icon和图片间距*/
                 createConfig.setIconMargin(iconMargin);
+                /*生成什么格式的二维码*/
                 createConfig.setCodeFormat(barcodeFormat);
                 int size = dp2px(this, 270);
                 Bitmap logoBitmap = null;

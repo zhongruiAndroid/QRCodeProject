@@ -228,3 +228,79 @@ codeScanView.onResume();
 Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 vibrator.vibrate(100);
 ```
+
+
+## 手动生成二维码
+
+```java
+String content = "二维码内容";
+
+/*生成二维码对应的参数*/
+CreateConfig createConfig = new CreateConfig();
+/*生成qrcode时，二维码的容错率，默认ErrorCorrectionLevel.H(30%)*/
+createConfig.errorCorrection = ErrorCorrectionLevel.H;
+/*二维码的背景色，默认白色*/
+createConfig.setBackgroundColor(backgroundColor);
+/*二维码前景色，默认黑色*/
+createConfig.setForegroundColor(foregroundColor);
+/*二维码内容距离二维码图片的边距*/
+createConfig.setMargin(margin);
+/*给二维码添加图片时的背景色*/
+createConfig.setIconBackgroundColor(iconBackgroundColor);
+/*给二维码添加图片时生成icon的圆角*/
+createConfig.setIconCorner(iconCorner);
+/*给二维码添加图片的圆角*/
+createConfig.setIconImageCorner(imageCorner);
+/*给二维码添加图片生成出来的icon宽度*/
+createConfig.setIconWidth(iconWidth);
+/*给二维码添加图片生成出来的icon和图片间距*/
+createConfig.setIconMargin(iconMargin);
+/*生成什么格式的二维码,默认BarcodeFormat.QR_CODE*/
+createConfig.setCodeFormat(barcodeFormat);
+int size = dp2px(this, 270);
+
+
+Bitmap bitmap = EncodeUtils.createCode(content,logoBitmap,sizeWidth,sizeHeight,createConfig);
+//bitmap返回为null时，生成失败
+if(bitmap ==null){
+	//生成失败
+}else{
+	//生成成功
+}
+//其他重载方法
+EncodeUtils.createCode(content);
+EncodeUtils.createCode(content,size);
+EncodeUtils.createCode(content,logoBitmap);
+EncodeUtils.createCode(content,createConfig);
+```
+## 解析二维码图片
+```java
+List<BarcodeFormat> list = new ArrayList<>();
+list.add(BarcodeFormat.QR_CODE);
+list.add(BarcodeFormat.AZTEC);
+list.add(BarcodeFormat.CODE_39);
+list.add(BarcodeFormat.CODE_93);
+list.add(BarcodeFormat.CODE_128);
+list.add(BarcodeFormat.DATA_MATRIX);
+list.add(BarcodeFormat.EAN_8);
+list.add(BarcodeFormat.EAN_13);
+list.add(BarcodeFormat.ITF);
+list.add(BarcodeFormat.PDF_417);
+list.add(BarcodeFormat.UPC_A);
+list.add(BarcodeFormat.UPC_E);
+list.add(BarcodeFormat.CODABAR);
+
+//将选择的图片转成bitmap(通过BitmapFactory.decodeXXX()实现)
+
+/*某个或者多个格式解析二维码*/
+Result result = DecodeUtils.startDecode(bitmap, list);
+/*单个格式解析二维码*/
+Result result = DecodeUtils.startDecode(bitmap, BarcodeFormat.QR_CODE);
+/*result==null时解析失败*/
+if(result==null){
+	//解析失败
+}else{
+	//解析成功
+	String text=result.getText();
+}
+```
