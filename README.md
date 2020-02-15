@@ -284,6 +284,7 @@ EncodeUtils.createCode(content,createConfig);
 ```
 ## 解析二维码图片
 ```java
+/*建议把常用的放在上面,越上优先级越高*/
 List<BarcodeFormat> list = new ArrayList<>();
 list.add(BarcodeFormat.QR_CODE);
 list.add(BarcodeFormat.AZTEC);
@@ -303,8 +304,10 @@ list.add(BarcodeFormat.CODABAR);
 
 /*某个或者多个格式解析二维码*/
 Result result = DecodeUtils.startDecode(bitmap, list);
+
 /*单个格式解析二维码*/
 Result result = DecodeUtils.startDecode(bitmap, BarcodeFormat.QR_CODE);
+
 /*result==null时解析失败*/
 if(result==null){
 	//解析失败
