@@ -133,7 +133,7 @@ public List<BarcodeFormat> getCodeFormat() {
 
     /*返回null默认为CodeFormat.QR_CODE:常用的二维条码*/
     /*如果没有其他格式需求，建议返回null*/
-    return list;
+    return null;
 }
 
 
