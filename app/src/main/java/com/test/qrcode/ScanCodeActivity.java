@@ -121,7 +121,7 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
         return 6;
     }
 
-    private boolean jumpAct = true;
+    private boolean jumpAct = false;
 
     @Override
     public void onSuccess(Result rawResult, Bitmap bitmap) {
