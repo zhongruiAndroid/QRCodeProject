@@ -111,7 +111,7 @@ public void onSuccess(Result rawResult, Bitmap bitmap) {
 @Override
 public List<BarcodeFormat> getCodeFormat() {
     /*需要识别的一维码、二维码格式*/
-    /*如果需要支持多种格式，建议把常用的放在上面*/
+    /*如果需要支持多种格式，建议把常用的放在上面,越上优先级越高*/
     List<BarcodeFormat>list=new ArrayList<>();
 
     list.add(BarcodeFormat.QR_CODE);
