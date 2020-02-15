@@ -13,17 +13,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="5dp"
         >
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="没开摄像头预览效果"
+            android:layout_gravity="center_horizontal"
+            />
         <com.github.qrcode.CodeScanView
             android:id="@+id/csv"
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            app:scanBorderHeight="500px"
             app:scanBorderLeft="300px"
             app:scanBorderTop="100px"
             app:scanBorderWidth="500px"
-            app:scanBorderHeight="500px"
             />
 
         <LinearLayout
@@ -172,9 +176,9 @@
                 android:id="@+id/sbScanBorderLeft"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:progress="300"
+                android:layout_weight="1"
                 android:max="300"
-                android:layout_weight="1"/>
+                android:progress="300"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -187,8 +191,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:progress="100"
-                android:max="100"/>
+                android:max="100"
+                android:progress="100"/>
         </LinearLayout>
 
         <LinearLayout
@@ -209,8 +213,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:progress="500"
                 android:max="500"
+                android:progress="500"
                 />
 
             <TextView
@@ -224,8 +228,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:progress="500"
-                android:max="500"/>
+                android:max="500"
+                android:progress="500"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/btMaskColor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="maskColor"
+                android:textAllCaps="false"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -254,7 +274,6 @@
                 />
 
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -263,6 +282,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             >
+
             <Button
                 android:id="@+id/btScanLineColor"
                 android:layout_width="0dp"
@@ -271,6 +291,7 @@
                 android:text="scanLineColor"
                 android:textAllCaps="false"
                 />
+
             <Button
                 android:id="@+id/btScanColor"
                 android:layout_width="0dp"
@@ -281,24 +302,28 @@
                 />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             >
+
             <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/cbShowScanColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="是否显示扫描渐变"
                 />
+
             <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/cbUseDrawable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="扫描线使用图片"
                 />
+
             <Button
                 android:id="@+id/btDrawableColor"
                 android:layout_width="0dp"

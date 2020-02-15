@@ -14,7 +14,9 @@
     <com.github.qrcode.CodeScanView
         android:id="@+id/csv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:maskColor="#55000000"
+        />
     <Button
         android:id="@+id/btOpenLight"
         android:layout_width="match_parent"
