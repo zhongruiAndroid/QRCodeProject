@@ -3,7 +3,7 @@
 |  [ ![Download](https://api.bintray.com/packages/zhongrui/mylibrary/QRCode/images/download.svg?version=5.0.0) ](https://bintray.com/zhongrui/mylibrary/QRCode/5.0.0/link) | 最新版本号(仅QR_CODE格式)|
 |--------|----|
 ```gradle
-implementation 'com.github:QRCode::版本号'
+implementation 'com.github:QRCode:版本号'
 ```
 
 <img src="https://github.com/zhongruiAndroid/QRCodeProject/blob/develop_qrcode/screen/qrcode.jpg" alt="image"  width="auto" height="640"> <img src="https://github.com/zhongruiAndroid/QRCodeProject/blob/develop_qrcode/screen/showview.jpg" alt="image"  width="auto" height="640"> 
