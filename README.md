@@ -7,6 +7,11 @@
 
 ##### 第一步(Activity实现QRCodeListener 接口)
 ```java
+/*AndroidManifest.xml添加相机权限*/
+<uses-permission android:name="android.permission.CAMERA"/>
+/*如果需要震动效果,需要添加VIBRATE权限*/
+<uses-permission android:name="android.permission.VIBRATE"/>
+
 private CameraManager cameraManager;
 private CodeScanView codeScanView;
 public class YourActivity extends AppCompatActivity implements QRCodeListener {
