@@ -172,6 +172,7 @@ cameraManager.stopDetect();
 ### 自定义扫描框CodeScanView使用
 | 属性                | 说明                    |                                 |
 |---------------------|-------------------------|---------------------------------|
+| maskColor         | 遮罩层颜色                | 默认透明                     |
 | borderColor         | 边框颜色                | 默认#108EE9                     |
 | borderWidth         | 边框宽度                | 默认1dp                         |
 | cornerWidth         | 四个角的线宽            | 默认3dp                         |
