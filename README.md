@@ -1,5 +1,10 @@
 ## 二维码扫描(全格式)
 ### 该库基于zxing源码小改,所以不需要额外集成zxing了
+| [ ![Download](https://api.bintray.com/packages/zhongrui/mylibrary/QRCode/images/download.svg?version=1.0.0) ](https://bintray.com/zhongrui/mylibrary/QRCode/1.0.0/link)| 最新版本号(全格式)|
+|--------|----|
+```gradle
+implementation 'com.github:QRCode:版本号'
+```
 
 <img src="https://github.com/zhongruiAndroid/QRCodeProject/blob/master/screen/all.jpg" alt="image"  width="auto" height="640"> <img src="https://github.com/zhongruiAndroid/QRCodeProject/blob/master/screen/showview.jpg" alt="image"  width="auto" height="640"> 
 
