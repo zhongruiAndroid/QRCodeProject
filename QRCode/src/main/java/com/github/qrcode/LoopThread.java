@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class LoopThread extends Thread {
     private int screenHeight;
     private Rect scanRect;
     private boolean isNeedGetScanBitmap;
-    private List<String> codeFormat;
+    private List<BarcodeFormat> codeFormat;
     private int maxSize=MAX_SIZE;
 
     public LoopThread(final int screenWidth, final int screenHeight, int maxFrameNum, final Rect scanRect, final boolean isNeedGetScanBitmap) {
@@ -56,12 +57,12 @@ public class LoopThread extends Thread {
         this.isVerticalScreen=isVerticalScreen;
     }
     public void startEncode(byte[] data, int screenW, int screenH, Rect scanRect, boolean isNeedGetScanBitmap) {
-        EncodeRunnable encodeRunnable = new EncodeRunnable(data, screenW, screenH);
-        encodeRunnable.setCodeFormat(codeFormat);
-        encodeRunnable.setVerticalScreen(isVerticalScreen);
-        encodeRunnable.setEncodeRect(scanRect);
-        encodeRunnable.setNeedGetScanBitmap(isNeedGetScanBitmap);
-        encodeRunnable.setListener(new EncodeSuccessListener() {
+        DecodeRunnable decodeRunnable = new DecodeRunnable(data, screenW, screenH);
+        decodeRunnable.setCodeFormat(codeFormat);
+        decodeRunnable.setVerticalScreen(isVerticalScreen);
+        decodeRunnable.setEncodeRect(scanRect);
+        decodeRunnable.setNeedGetScanBitmap(isNeedGetScanBitmap);
+        decodeRunnable.setListener(new DecodeSuccessListener() {
             @Override
             public void onSuccess(final Result rawResult, final Bitmap bitmap) {
                 reduceFrame();
@@ -75,7 +76,7 @@ public class LoopThread extends Thread {
         });
         if (executors != null) {
             try {
-                executors.execute(encodeRunnable);
+                executors.execute(decodeRunnable);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -133,6 +134,9 @@ public class LoopThread extends Thread {
     }
 
     public void offer(byte[] data) {
+        if(atomicBoolean==null||atomicBoolean.get()){
+            return;
+        }
         if (data!=null&&frameQueue != null&&getFrameNum()<maxSize) {
             frameQueue.offer(data);
             addFrame();
@@ -231,7 +235,8 @@ public class LoopThread extends Thread {
     public void setQRCodeListener(QRCodeListener listener) {
         this.qrCodeListener = listener;
     }
-    public void setCodeFormat(List<String> codeFormat) {
+    public void setCodeFormat(List<BarcodeFormat> codeFormat) {
         this.codeFormat = codeFormat;
     }
+
 }

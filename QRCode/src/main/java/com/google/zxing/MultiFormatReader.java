@@ -16,13 +16,27 @@
 
 package com.google.zxing;
 
+import com.google.zxing.aztec.AztecReader;
+import com.google.zxing.datamatrix.DataMatrixReader;
+import com.google.zxing.maxicode.MaxiCodeReader;
+import com.google.zxing.oned.CodaBarReader;
+import com.google.zxing.oned.Code128Reader;
+import com.google.zxing.oned.Code39Reader;
+import com.google.zxing.oned.Code93Reader;
+import com.google.zxing.oned.EAN13Reader;
+import com.google.zxing.oned.EAN8Reader;
+import com.google.zxing.oned.ITFReader;
+import com.google.zxing.oned.UPCAReader;
+import com.google.zxing.oned.UPCEReader;
+import com.google.zxing.oned.rss.RSS14Reader;
+import com.google.zxing.oned.rss.expanded.RSSExpandedReader;
+import com.google.zxing.pdf417.PDF417Reader;
 import com.google.zxing.qrcode.QRCodeReader;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * MultiFormatReader is a convenience class and the main entry point into the library for most uses.
@@ -38,8 +52,8 @@ public final class MultiFormatReader implements Reader {
 
     private Map<DecodeHintType, ?> hints;
     private Reader[] readers;
-    private Map<String, Reader> formatMap;
-
+    private Map<Object, Reader> formatMap;
+    private List<BarcodeFormat>codeFormat=new ArrayList<>();
 
     /**
      * Decode an image using the state set up by calling setHints() previously. Continuous scan
@@ -55,8 +69,8 @@ public final class MultiFormatReader implements Reader {
         if (this.readers == null) {
             if (this.codeFormat != null && !this.codeFormat.isEmpty()) {
                 for (int i = 0; i < codeFormat.size(); i++) {
-                    String format = codeFormat.get(i);
-                    Reader reader = getFormatMap().get(format);
+                    BarcodeFormat barcodeFormat = codeFormat.get(i);
+                    Reader reader = getReaderForFormat(barcodeFormat);
                     if(reader!=null&&!readers.contains(reader)){
                         readers.add(reader);
                     }
@@ -70,19 +84,69 @@ public final class MultiFormatReader implements Reader {
         return decodeInternal(image);
     }
 
-    private Map<String, Reader> getFormatMap() {
-        if (formatMap == null) {
-            formatMap = new ConcurrentHashMap<>();
-
-            formatMap.put("QR_CODE", new QRCodeReader());
+    private Reader getReaderForFormat(BarcodeFormat format){
+        if(format==null){
+            return null;
         }
-        return formatMap;
+        Reader reader=null;
+        switch (format){
+            case AZTEC:
+                reader= new AztecReader();
+            break;
+            case CODABAR:
+                reader=new CodaBarReader();
+            break;
+            case CODE_39:
+                reader=new Code39Reader(false);
+            break;
+            case CODE_93:
+                reader=new Code93Reader();
+            break;
+            case CODE_128:
+                reader=new Code128Reader();
+            break;
+            case DATA_MATRIX:
+                reader=new DataMatrixReader();
+            break;
+            case EAN_8:
+                reader=new EAN8Reader();
+            break;
+            case EAN_13:
+                reader=new EAN13Reader();
+            break;
+            case ITF:
+                reader=new ITFReader();
+            break;
+            case MAXICODE:
+                reader=new MaxiCodeReader();
+            break;
+            case PDF_417:
+                reader=new PDF417Reader();
+            break;
+            case QR_CODE:
+                reader=new QRCodeReader();
+            break;
+            case RSS_14:
+                reader=new RSS14Reader();
+            break;
+            case RSS_EXPANDED:
+                reader=new RSSExpandedReader();
+            break;
+            case UPC_A:
+                reader=new UPCAReader();
+            break;
+            case UPC_E:
+                reader=new UPCEReader();
+            break;
+        }
+        return reader;
     }
 
-    private List<String> codeFormat;
-
-    public void setCodeFormat(List<String> codeFormat) {
-        this.codeFormat = codeFormat;
+    public void setCodeFormat(List<BarcodeFormat> codeFormatList) {
+        if(codeFormatList==null){
+            codeFormatList=new ArrayList<>();
+        }
+        this.codeFormat = codeFormatList;
     }
 
     @Override

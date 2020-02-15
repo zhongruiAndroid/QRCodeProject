@@ -1,13 +1,21 @@
-## 二维码扫描(仅QR_CODE格式,库体积较小)
-### [查看全格式分支](https://github.com/zhongruiAndroid/QRCodeProject)
+## 二维码扫描(全格式)
+### [查看仅QR_CODE格式分支](https://github.com/zhongruiAndroid/QRCodeProject/tree/develop_qrcode)
 
-## [仅QR_CODE格式Demo.apk下载](https://raw.githubusercontent.com/zhongruiAndroid/QRCodeProject/develop_qrcode/demo/demo.apk)
+## [全格式Demo.apk下载](https://raw.githubusercontent.com/zhongruiAndroid/QRCodeProject/master/demo/demo.apk)
+
+
 
 ##### 第一步(Activity实现QRCodeListener 接口)
 ```java
+/*AndroidManifest.xml添加相机权限*/
+<uses-permission android:name="android.permission.CAMERA"/>
+/*如果需要震动效果,需要添加VIBRATE权限*/
+<uses-permission android:name="android.permission.VIBRATE"/>
 
+private CameraManager cameraManager;
+private CodeScanView codeScanView;
 public class YourActivity extends AppCompatActivity implements QRCodeListener {
-	
+
 }
 ```
 ##### 第二步
@@ -15,24 +23,26 @@ public class YourActivity extends AppCompatActivity implements QRCodeListener {
 /*找到布局中的SurfaceView*/
 SurfaceView surfaceView = findViewById(R.id.surfaceView);
 /*扫描框view*/
-CodeScanView codeScanView= findViewById(R.id.codeScanView);
+codeScanView = findViewById(R.id.codeScanView);
 
- /*实例化CameraManager*/
-CameraManager cameraManager = new CameraManager(this);
+/*实例化CameraManager*/
+cameraManager = new CameraManager(this);
 /*给surfaceView的宽高设置为手机分辨率大小,防止预览变形*/
-CameraManager.setFullSurfaceView(this,surfaceView);
+CameraManager.setFullSurfaceView(this, surfaceView);
 
 /*常规操作*/
-surfaceHolder = surfaceView.getHolder();
+SurfaceHolder surfaceHolder = surfaceView.getHolder();
 surfaceHolder.addCallback(new SurfaceHolder.Callback() {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-	    //启用相机并且设置预览界面
-        cameraManager.surfaceCreated(context,holder);
+        //启用相机并且设置预览界面
+        cameraManager.surfaceCreated(TestActivity.this, holder);
     }
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
+
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         cameraManager.surfaceDestroyed();
@@ -67,8 +77,13 @@ public Activity getAct() {
 @Override
 public Rect getScanRect() {
     /*扫描框所识别的范围,如果返回null,则识别整个SurfaceView范围*/
-    /*CodeScanView为默认提供的一个自定义view，下面详细说明使用方法,getScanRectForWindow获取扫描范围*/
-    return codeScanView.getScanRectForWindow();
+    /*CodeScanView为默认提供的一个自定义view，下面详细说明使用方法,getScanRectForView获取扫描范围*/
+    return codeScanView.getScanRectForView();
+}
+@Override
+public int getMaxFrameNum() {
+    /*同时解码的数量，返回0默认为6，最大值不会超过20，建议返回0或者6*/
+    return 6;
 }
 @Override
 public boolean needGetBitmapForSuccess() {
@@ -76,15 +91,56 @@ public boolean needGetBitmapForSuccess() {
     return true;
 }
 @Override
-public int getMaxFrameNum() {
-    /*同时解码的数量，返回0默认为6，最大值不会超过20，建议返回0或者6*/
-    return 5;
-}
-@Override
 public void onSuccess(Result rawResult, Bitmap bitmap) {
     /*rawResult:扫描结果，rawResult.getText()获取文字内容*/
     /*bitmap:扫描成功时的图片，needGetBitmapForSuccess返回false时为空*/
+
+
+    /*当解析成功，会自动stopDetect，如需继续检测解析，手动调用startDetect方法*/
+
+    /*如果不跳转页面，在当前页面弹窗处理结果*/
+
+    /*******窗口显示时*******/
+    /*暂停画面解析*/
+    cameraManager.stopDetect();
+    /*暂停扫描动画*/
+    codeScanView.onPause();
+
+    /*******如果窗口消失*******/
+    /*继续检测解析*/
+    cameraManager.startDetect();
+    /*继续动画*/
+    codeScanView.onResume();
 }
+
+@Override
+public List<BarcodeFormat> getCodeFormat() {
+    /*需要识别的一维码、二维码格式*/
+    /*如果需要支持多种格式，建议把常用的放在上面,越上优先级越高*/
+    List<BarcodeFormat>list=new ArrayList<>();
+
+    list.add(BarcodeFormat.QR_CODE);
+    list.add(BarcodeFormat.AZTEC);
+    list.add(BarcodeFormat.CODABAR);
+    list.add(BarcodeFormat.CODE_39);
+    list.add(BarcodeFormat.CODE_93);
+    list.add(BarcodeFormat.CODE_128);
+    list.add(BarcodeFormat.DATA_MATRIX);
+    list.add(BarcodeFormat.EAN_8);
+    list.add(BarcodeFormat.EAN_13);
+    list.add(BarcodeFormat.ITF);
+    list.add(BarcodeFormat.MAXICODE);
+    list.add(BarcodeFormat.PDF_417);
+    list.add(BarcodeFormat.RSS_14);
+    list.add(BarcodeFormat.RSS_EXPANDED);
+    list.add(BarcodeFormat.UPC_A);
+    list.add(BarcodeFormat.UPC_E);
+
+    /*返回null默认为CodeFormat.QR_CODE:常用的二维条码*/
+    /*如果没有其他格式需求，建议返回null*/
+    return null;
+}
+
 
 ```
 ##### 第五步
@@ -168,5 +224,97 @@ cameraManager.stopDetect();
 ```java
 /*建议SurfaceView和CodeScanView放在FrameLayout中，layout_width、layout_height、layout_margin属性一定要保持一致*/
 /*否则扫描范围就会存在误差*/
-codeScanView.getScanRectForWindow()
+
+/*扫描框范围*/
+codeScanView.getScanRectForView()
+/*暂停扫描动画*/
+codeScanView.onPause();
+/*开始扫描动画*/
+codeScanView.onResume();
+```
+```java
+/*扫描成功之后可以自行添加震动效果*/
+Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+vibrator.vibrate(100);
+```
+
+
+## 手动生成二维码
+
+```java
+String content = "二维码内容";
+
+/*生成二维码对应的参数*/
+CreateConfig createConfig = new CreateConfig();
+/*生成qrcode时，二维码的容错率，默认ErrorCorrectionLevel.H(30%)*/
+createConfig.errorCorrection = ErrorCorrectionLevel.H;
+/*二维码的背景色，默认白色*/
+createConfig.setBackgroundColor(backgroundColor);
+/*二维码前景色，默认黑色*/
+createConfig.setForegroundColor(foregroundColor);
+/*二维码内容距离二维码图片的边距*/
+createConfig.setMargin(margin);
+/*给二维码添加图片时的背景色*/
+createConfig.setIconBackgroundColor(iconBackgroundColor);
+/*给二维码添加图片时生成icon的圆角*/
+createConfig.setIconCorner(iconCorner);
+/*给二维码添加图片的圆角*/
+createConfig.setIconImageCorner(imageCorner);
+/*给二维码添加图片生成出来的icon宽度*/
+createConfig.setIconWidth(iconWidth);
+/*给二维码添加图片生成出来的icon和图片间距*/
+createConfig.setIconMargin(iconMargin);
+/*生成什么格式的二维码,默认BarcodeFormat.QR_CODE*/
+createConfig.setCodeFormat(barcodeFormat);
+int size = dp2px(this, 270);
+
+
+Bitmap bitmap = EncodeUtils.createCode(content,logoBitmap,sizeWidth,sizeHeight,createConfig);
+//bitmap返回为null时，生成失败
+if(bitmap ==null){
+	//生成失败
+}else{
+	//生成成功
+}
+//其他重载方法
+EncodeUtils.createCode(content);
+EncodeUtils.createCode(content,size);
+EncodeUtils.createCode(content,logoBitmap);
+EncodeUtils.createCode(content,createConfig);
+```
+## 解析二维码图片
+```java
+/*建议把常用的放在上面,越上优先级越高*/
+List<BarcodeFormat> list = new ArrayList<>();
+list.add(BarcodeFormat.QR_CODE);
+list.add(BarcodeFormat.AZTEC);
+list.add(BarcodeFormat.CODE_39);
+list.add(BarcodeFormat.CODE_93);
+list.add(BarcodeFormat.CODE_128);
+list.add(BarcodeFormat.DATA_MATRIX);
+list.add(BarcodeFormat.EAN_8);
+list.add(BarcodeFormat.EAN_13);
+list.add(BarcodeFormat.ITF);
+list.add(BarcodeFormat.PDF_417);
+list.add(BarcodeFormat.UPC_A);
+list.add(BarcodeFormat.UPC_E);
+list.add(BarcodeFormat.CODABAR);
+
+//将选择的图片转成bitmap(通过BitmapFactory.decodeXXX()实现)
+
+/*某个或者多个格式解析二维码*/
+Result result = DecodeUtils.startDecode(bitmap, list);
+
+/*单个格式解析二维码*/
+Result result = DecodeUtils.startDecode(bitmap, BarcodeFormat.QR_CODE);
+
+/*result==null时解析失败*/
+if(result==null){
+	//解析失败
+}else{
+	//解析成功
+	String text=result.getText();
+}
+
+/*代码生成的EAN_8和UPC_E两种格式的二维码图片用代码解析失败,不过可以扫描解析成功，不知道是我使用问题还是zxing的bug*/
 ```

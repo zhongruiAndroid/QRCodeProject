@@ -3,6 +3,7 @@ package com.github.qrcode;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 /***
@@ -10,6 +11,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
  */
 public class CreateConfig {
     public ErrorCorrectionLevel errorCorrection= ErrorCorrectionLevel.H;
+    private int pdfCorrection=0;
     private String characterSet="utf-8";
     private int margin=3;
     private int qrVersion=3;
@@ -26,6 +28,8 @@ public class CreateConfig {
 
     private int iconForegroundColor=Color.TRANSPARENT;
     private int iconBackgroundColor=Color.WHITE;
+
+    private BarcodeFormat codeFormat=BarcodeFormat.QR_CODE;
 
     public int getMargin() {
         return margin;
@@ -132,5 +136,29 @@ public class CreateConfig {
 
     public String getCharacterSet() {
         return characterSet;
+    }
+
+    public BarcodeFormat getCodeFormat() {
+        return codeFormat;
+    }
+
+    public void setCodeFormat(BarcodeFormat codeFormat) {
+        if(codeFormat==null){
+            codeFormat=BarcodeFormat.QR_CODE;
+        }
+        this.codeFormat = codeFormat;
+    }
+
+    public int getPdfCorrection() {
+        return pdfCorrection;
+    }
+
+    public void setPdfCorrection(int pdfCorrection) {
+        if(pdfCorrection<0){
+            pdfCorrection=0;
+        }else if(pdfCorrection>8){
+            pdfCorrection=8;
+        }
+        this.pdfCorrection = pdfCorrection;
     }
 }

@@ -499,7 +499,7 @@ public class CodeScanView extends View {
     }
 
 
-    public Rect getScanRectForWindow() {
+    public Rect getScanRectForView() {
         int left = getScanBorderLeft();
         int top = getScanBorderTop();
         int right = getScanBorderRight();
@@ -509,7 +509,7 @@ public class CodeScanView extends View {
     }
 
     @Deprecated
-    public RectF getScanRectFForWindow() {
+    public RectF getScanRectFForView() {
         int left = getScanBorderLeft();
         int top = getScanBorderTop();
         int right = getScanBorderRight();

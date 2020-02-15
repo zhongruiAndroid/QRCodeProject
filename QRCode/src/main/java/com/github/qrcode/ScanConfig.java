@@ -7,13 +7,15 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 
+import com.google.zxing.BarcodeFormat;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ScanConfig {
     public static final int MAX_SIZE=6;
 
-    public List<String>codeFormat;
+    public List<BarcodeFormat>codeFormat;
     private QRCodeListener listener;
 
     public int screenWidth;
@@ -64,9 +66,11 @@ public class ScanConfig {
         /*是否需要返回识别成功时的图片*/
         isNeed = getListener().needGetBitmapForSuccess();
 
-        codeFormat=new ArrayList<>();
-        codeFormat.add(CodeFormat.QR_CODE);
-
+        codeFormat=getListener().getCodeFormat();
+        if(codeFormat==null||codeFormat.size()==0){
+            codeFormat=new ArrayList<>();
+            codeFormat.add(BarcodeFormat.QR_CODE);
+        }
     }
 
     private int getScreenWidth(Activity activity) {
