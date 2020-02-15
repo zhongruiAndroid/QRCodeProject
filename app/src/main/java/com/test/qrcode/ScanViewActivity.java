@@ -40,6 +40,8 @@ public class ScanViewActivity extends AppCompatActivity implements View.OnClickL
     private Button btDrawableColor;
     private SelectColorDialog selectColorDialog;
 
+    private Button btMaskColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,9 @@ public class ScanViewActivity extends AppCompatActivity implements View.OnClickL
 
 
         selectColorDialog = new SelectColorDialog(this);
+
+        btMaskColor = findViewById(R.id.btMaskColor);
+        btMaskColor.setOnClickListener(this);
 
         csv = findViewById(R.id.csv);
 
@@ -214,6 +219,9 @@ public class ScanViewActivity extends AppCompatActivity implements View.OnClickL
                         break;
                     case R.id.btDrawableColor:
                         csv.setCenterDrawableColor(color);
+                        break;
+                    case R.id.btMaskColor:
+                        csv.setMaskColor(color);
                         break;
                 }
             }

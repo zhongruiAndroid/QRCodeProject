@@ -285,7 +285,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 /*生成二维码对应的参数*/
                 CreateConfig createConfig = new CreateConfig();
                 /*生成qrcode时，二维码的容错率，默认ErrorCorrectionLevel.H(30%)*/
-                createConfig.errorCorrection = ErrorCorrectionLevel.H;
+                createConfig.errorCorrection =errorCorrectionLevel;
                 /*二维码的背景色，默认白色*/
                 createConfig.setBackgroundColor(backgroundColor);
                 /*二维码前景色，默认黑色*/

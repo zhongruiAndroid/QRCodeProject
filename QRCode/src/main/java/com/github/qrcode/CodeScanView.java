@@ -25,6 +25,7 @@ import android.view.animation.LinearInterpolator;
 
 
 public class CodeScanView extends View {
+    private int maskColor;
     private int borderColor;
     private int borderWidth;
     private int cornerWidth;
@@ -73,6 +74,9 @@ public class CodeScanView extends View {
 
     private Paint borderClipPaint;
     private Path borderClipPath;
+
+    private Paint maskPaint;
+    private Path maskPath;
 
     public CodeScanView(Context context) {
         super(context);
@@ -124,6 +128,10 @@ public class CodeScanView extends View {
         borderClipPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         borderClipPaint.setStyle(Paint.Style.STROKE);
 
+        maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        maskPaint.setStyle(Paint.Style.FILL);
+        maskPaint.setColor(maskColor);
+
         cornerColorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         cornerColorPaint.setColor(cornerColor);
         cornerColorPaint.setStyle(Paint.Style.FILL);
@@ -145,6 +153,7 @@ public class CodeScanView extends View {
         cornerPath4 = new Path();
 
         borderClipPath = new Path();
+        maskPath = new Path();
 
     }
 
@@ -153,6 +162,7 @@ public class CodeScanView extends View {
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CodeScanView);
 
+        maskColor = typedArray.getColor(R.styleable.CodeScanView_maskColor, Color.TRANSPARENT);
         borderColor = typedArray.getColor(R.styleable.CodeScanView_borderColor, getDefColor());
         borderWidth = (int) typedArray.getDimension(R.styleable.CodeScanView_borderWidth, getDefBorderWidth());
         cornerWidth = (int) typedArray.getDimension(R.styleable.CodeScanView_cornerWidth, getDefCornerWidth());
@@ -249,6 +259,7 @@ public class CodeScanView extends View {
         if (isInEditMode()) {
             scanBitmapTop = getScanBorderHeight() / 2 + getScanBorderTop();
         }
+
     }
 
     private void updateLinearGradient() {
@@ -261,13 +272,17 @@ public class CodeScanView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        if(maskColor!=Color.TRANSPARENT){
+            canvas.drawPath(maskPath,maskPaint);
+        }
         int count = canvas.saveLayer(getScanBorderLeft(), getScanBorderTop(), getScanBorderRight(), getScanBorderBottom(), null, Canvas.ALL_SAVE_FLAG);
 
         if (showScanColor && centerBitmap == null) {
             canvas.drawRect(new RectF(scanBorderLeft + borderWidth, scanBitmapTop - scanBorderHeight + scanLineWidth / 2, scanBorderWidth + scanBorderLeft - borderWidth, scanBitmapTop + scanLineWidth / 2), scanColorPaint);
         }
         if (centerBitmap == null) {
-            canvas.drawLine(scanBorderLeft + borderWidth + scanLineLeftOffset, scanBitmapTop, scanBorderLeft + scanBorderWidth -scanLineRightOffset -borderWidth, scanBitmapTop, scanLinePaint);
+            canvas.drawLine(scanBorderLeft + borderWidth + scanLineLeftOffset, scanBitmapTop, scanBorderLeft + scanBorderWidth - scanLineRightOffset - borderWidth, scanBitmapTop, scanLinePaint);
         } else {
             int width = centerBitmap.getWidth();
             int offset = (scanBorderWidth - width) / 2;
@@ -286,7 +301,6 @@ public class CodeScanView extends View {
         } else {
             canvas.restoreToCount(count);
         }
-
 
         canvas.drawPath(cornerPath1, cornerColorPaint);
         canvas.drawPath(cornerPath2, cornerColorPaint);
@@ -321,7 +335,6 @@ public class CodeScanView extends View {
     }
 
 
-
     private void updateBorderPath() {
         if (borderPath == null) {
             borderPath = new Path();
@@ -340,6 +353,20 @@ public class CodeScanView extends View {
             borderClipPath.reset();
         }
         borderClipPath.addRect(new RectF(scanBorderLeft + borderWidth, scanBorderTop + borderWidth, scanBorderLeft + scanBorderWidth - borderWidth, scanBorderTop + scanBorderHeight - borderWidth), Path.Direction.CW);
+
+        if (maskPath == null) {
+            maskPath = new Path();
+        } else {
+            maskPath.reset();
+        }
+        /*左边*/
+        maskPath.addRect(0, 0, scanBorderLeft + borderWidth, getHeight(), Path.Direction.CW);
+        /*右边*/
+        maskPath.addRect(scanBorderLeft + scanBorderWidth - borderWidth, 0, getWidth(), getHeight(), Path.Direction.CW);
+        /*上边*/
+        maskPath.addRect(scanBorderLeft + borderWidth, 0, scanBorderLeft + scanBorderWidth - borderWidth, scanBorderTop + borderWidth, Path.Direction.CW);
+        /*下边*/
+        maskPath.addRect(scanBorderLeft + borderWidth,  scanBorderTop + scanBorderHeight - borderWidth, scanBorderLeft + scanBorderWidth - borderWidth, getHeight(), Path.Direction.CW);
 
     }
 
@@ -568,6 +595,19 @@ public class CodeScanView extends View {
         }
     }*/
 
+    public int getMaskColor() {
+        return maskColor;
+    }
+
+    public void setMaskColor(int maskColor) {
+        if (this.maskColor == maskColor) {
+            return;
+        }
+        this.maskColor = maskColor;
+        maskPaint.setColor(maskColor);
+        invalidate();
+    }
+
     public int getBorderColor() {
         return borderColor;
     }
@@ -670,8 +710,6 @@ public class CodeScanView extends View {
     }
 
 
-
-
     public int getScanLineColor() {
         return scanLineColor;
     }
@@ -749,9 +787,9 @@ public class CodeScanView extends View {
             return;
         }
         this.centerDrawable = centerDrawable;
-        if(this.centerDrawable==null){
-            this.centerBitmap=null;
-        }else{
+        if (this.centerDrawable == null) {
+            this.centerBitmap = null;
+        } else {
             setShowScanColor(false);
         }
         updateScanDrawable();
