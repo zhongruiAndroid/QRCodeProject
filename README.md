@@ -1,4 +1,9 @@
 ## 二维码扫描(全格式)
+
+
+<img src="https://github.com/zhongruiAndroid/QRCodeProject/blob/master/screen/all.jpg" alt="image"  width="auto" height="640"> <img src="https://github.com/zhongruiAndroid/QRCodeProject/blob/master/screen/showview.jpg" alt="image"  width="auto" height="640"> 
+
+
 ### [查看仅QR_CODE格式分支](https://github.com/zhongruiAndroid/QRCodeProject/tree/develop_qrcode)
 
 ## [全格式Demo.apk下载](https://raw.githubusercontent.com/zhongruiAndroid/QRCodeProject/master/demo/demo.apk)
