@@ -315,4 +315,6 @@ if(result==null){
 	//解析成功
 	String text=result.getText();
 }
+
+/*代码生成的EAN_8和UPC_E两种格式的二维码图片用代码解析失败,不过可以扫描解析成功，不知道是我使用问题还是zxing的bug*/
 ```
