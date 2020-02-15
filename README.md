@@ -1,4 +1,4 @@
-## 二维码扫描(全格式,库文件较多)
+## 二维码扫描(全格式)
 ### [查看仅QR_CODE格式分支](https://github.com/zhongruiAndroid/QRCodeProject/tree/develop_qrcode)
 
 ## [全格式Demo.apk下载](https://raw.githubusercontent.com/zhongruiAndroid/QRCodeProject/master/demo/demo.apk)
