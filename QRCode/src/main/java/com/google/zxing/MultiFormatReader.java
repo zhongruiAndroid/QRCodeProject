@@ -16,21 +16,6 @@
 
 package com.google.zxing;
 
-import com.google.zxing.aztec.AztecReader;
-import com.google.zxing.datamatrix.DataMatrixReader;
-import com.google.zxing.maxicode.MaxiCodeReader;
-import com.google.zxing.oned.CodaBarReader;
-import com.google.zxing.oned.Code128Reader;
-import com.google.zxing.oned.Code39Reader;
-import com.google.zxing.oned.Code93Reader;
-import com.google.zxing.oned.EAN13Reader;
-import com.google.zxing.oned.EAN8Reader;
-import com.google.zxing.oned.ITFReader;
-import com.google.zxing.oned.UPCAReader;
-import com.google.zxing.oned.UPCEReader;
-import com.google.zxing.oned.rss.RSS14Reader;
-import com.google.zxing.oned.rss.expanded.RSSExpandedReader;
-import com.google.zxing.pdf417.PDF417Reader;
 import com.google.zxing.qrcode.QRCodeReader;
 
 import java.util.ArrayList;
@@ -85,61 +70,7 @@ public final class MultiFormatReader implements Reader {
     }
 
     private Reader getReaderForFormat(BarcodeFormat format){
-        if(format==null){
-            return null;
-        }
-        Reader reader=null;
-        switch (format){
-            case AZTEC:
-                reader= new AztecReader();
-            break;
-            case CODABAR:
-                reader=new CodaBarReader();
-            break;
-            case CODE_39:
-                reader=new Code39Reader(false);
-            break;
-            case CODE_93:
-                reader=new Code93Reader();
-            break;
-            case CODE_128:
-                reader=new Code128Reader();
-            break;
-            case DATA_MATRIX:
-                reader=new DataMatrixReader();
-            break;
-            case EAN_8:
-                reader=new EAN8Reader();
-            break;
-            case EAN_13:
-                reader=new EAN13Reader();
-            break;
-            case ITF:
-                reader=new ITFReader();
-            break;
-            case MAXICODE:
-                reader=new MaxiCodeReader();
-            break;
-            case PDF_417:
-                reader=new PDF417Reader();
-            break;
-            case QR_CODE:
-                reader=new QRCodeReader();
-            break;
-            case RSS_14:
-                reader=new RSS14Reader();
-            break;
-            case RSS_EXPANDED:
-                reader=new RSSExpandedReader();
-            break;
-            case UPC_A:
-                reader=new UPCAReader();
-            break;
-            case UPC_E:
-                reader=new UPCEReader();
-            break;
-        }
-        return reader;
+        return new QRCodeReader();
     }
 
     public void setCodeFormat(List<BarcodeFormat> codeFormatList) {

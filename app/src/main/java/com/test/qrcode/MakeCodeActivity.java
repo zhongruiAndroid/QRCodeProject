@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -30,13 +29,9 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MakeCodeActivity extends AppCompatActivity implements OnClickListener, SeekBar.OnSeekBarChangeListener {
     private ImageView ivCode;
     private RadioGroup rg;
-    private RadioGroup rgFormat;
     private SeekBar sbMargin;
     private TextView tvForegroundColor;
     private TextView tvBackgroundColor;
@@ -68,21 +63,6 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
     private ErrorCorrectionLevel errorCorrectionLevel = ErrorCorrectionLevel.H;
 
 
-    private BarcodeFormat[] barcodeFormats = {
-            BarcodeFormat.QR_CODE,
-            BarcodeFormat.AZTEC,
-            BarcodeFormat.CODE_39,
-            BarcodeFormat.CODE_93,
-            BarcodeFormat.CODE_128,
-            BarcodeFormat.DATA_MATRIX,
-            BarcodeFormat.EAN_8,
-            BarcodeFormat.EAN_13,
-//            BarcodeFormat.ITF,
-            BarcodeFormat.PDF_417,
-            BarcodeFormat.UPC_A,
-            BarcodeFormat.UPC_E,
-            BarcodeFormat.CODABAR
-    };
     private Bitmap bitmap;
 
     @Override
@@ -162,75 +142,9 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
         selectColorDialog = new SelectColorDialog(this);
 
 
-        rgFormat = findViewById(R.id.rgFormat);
-        rgFormat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                barcodeFormat = barcodeFormats[checkedId];
-                etCodeContent.setEnabled(false);
-                switch (barcodeFormat) {
-                    case AZTEC:
-                        etCodeContent.setEnabled(true);
-                        etCodeContent.setText("AZTEC_123456");
-                        break;
-                    case CODE_39:
-                        etCodeContent.setText("CODE39");
-                        break;
-                    case CODE_93:
-                        etCodeContent.setText("CODE_93");
-                        break;
-                    case CODE_128:
-                        etCodeContent.setText("CODE_128");
-                        break;
-                    case DATA_MATRIX:
-                        etCodeContent.setText("DATA_MATRIX");
-                        break;
-                    case EAN_8:
-                        etCodeContent.setText("1234567");
-                        break;
-                    case EAN_13:
-                        etCodeContent.setText("123456789101");
-                        break;
-                    case ITF:
-                        etCodeContent.setText("12");
-                        break;
-                    case PDF_417:
-                        etCodeContent.setEnabled(true);
-                        etCodeContent.setText("PDF_417_可以有中文");
-                        break;
-                    case QR_CODE:
-                        etCodeContent.setEnabled(true);
-                        etCodeContent.setText("QR_CODE_可以有中文");
-                        break;
-                    case UPC_A:
-                        etCodeContent.setText("123456789012");
-                        break;
-                    case UPC_E:
-                        etCodeContent.setText("1234567");
-                        break;
-                    case CODABAR:
-                        etCodeContent.setText("1234567");
-                        break;
 
-                }
-            }
-        });
-        addFormat();
     }
 
-    private void addFormat() {
-        rgFormat.removeAllViews();
-        int size = barcodeFormats.length;
-        for (int i = 0; i < size; i++) {
-            RadioButton radioButton = new RadioButton(this);
-            radioButton.setText(barcodeFormats[i].toString());
-            radioButton.setId(i);
-            if (barcodeFormats[i] == BarcodeFormat.QR_CODE) {
-                radioButton.setChecked(true);
-            }
-            rgFormat.addView(radioButton);
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -285,7 +199,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
                 /*生成二维码对应的参数*/
                 CreateConfig createConfig = new CreateConfig();
                 /*生成qrcode时，二维码的容错率，默认ErrorCorrectionLevel.H(30%)*/
-                createConfig.errorCorrection = ErrorCorrectionLevel.H;
+                createConfig.errorCorrection = errorCorrectionLevel;
                 /*二维码的背景色，默认白色*/
                 createConfig.setBackgroundColor(backgroundColor);
                 /*二维码前景色，默认黑色*/
@@ -328,25 +242,7 @@ public class MakeCodeActivity extends AppCompatActivity implements OnClickListen
     }
 
     private void decodeBitmap(Bitmap bitmap) {
-        List<BarcodeFormat> list = new ArrayList<>();
-        list.add(BarcodeFormat.QR_CODE);
-        list.add(BarcodeFormat.AZTEC);
-        list.add(BarcodeFormat.CODE_39);
-        list.add(BarcodeFormat.CODE_93);
-        list.add(BarcodeFormat.CODE_128);
-        list.add(BarcodeFormat.DATA_MATRIX);
-        list.add(BarcodeFormat.EAN_8);
-        list.add(BarcodeFormat.EAN_13);
-        list.add(BarcodeFormat.ITF);
-        list.add(BarcodeFormat.PDF_417);
-        list.add(BarcodeFormat.UPC_A);
-        list.add(BarcodeFormat.UPC_E);
-        list.add(BarcodeFormat.CODABAR);
-
-        //Result result = DecodeUtils.startDecode(bitmap, barcodeFormat);
-        /*解析某个或者多个二维码*/
-        Result result = DecodeUtils.startDecode(bitmap, list);
-
+        Result result = DecodeUtils.startDecode(bitmap, BarcodeFormat.QR_CODE);
         if (result == null) {
             Toast.makeText(this, "解析失败", Toast.LENGTH_SHORT).show();
             return;

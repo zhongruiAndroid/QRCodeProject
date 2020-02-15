@@ -19,11 +19,7 @@ import android.widget.TextView;
 import com.github.qrcode.CameraManager;
 import com.github.qrcode.CodeScanView;
 import com.github.qrcode.QRCodeListener;
-import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ScanCodeActivity extends AppCompatActivity implements QRCodeListener {
 
@@ -169,31 +165,5 @@ public class ScanCodeActivity extends AppCompatActivity implements QRCodeListene
         dialog.show();
     }
 
-    @Override
-    public List<BarcodeFormat> getCodeFormat() {
-        /*需要识别的一维码、二维码格式*/
-        /*如果需要支持多种格式，建议把常用的放在上面*/
-        List<BarcodeFormat>list=new ArrayList<>();
 
-        list.add(BarcodeFormat.QR_CODE);
-        list.add(BarcodeFormat.AZTEC);
-        list.add(BarcodeFormat.CODABAR);
-        list.add(BarcodeFormat.CODE_39);
-        list.add(BarcodeFormat.CODE_93);
-        list.add(BarcodeFormat.CODE_128);
-        list.add(BarcodeFormat.DATA_MATRIX);
-        list.add(BarcodeFormat.EAN_8);
-        list.add(BarcodeFormat.EAN_13);
-        list.add(BarcodeFormat.ITF);
-        list.add(BarcodeFormat.MAXICODE);
-        list.add(BarcodeFormat.PDF_417);
-        list.add(BarcodeFormat.RSS_14);
-        list.add(BarcodeFormat.RSS_EXPANDED);
-        list.add(BarcodeFormat.UPC_A);
-        list.add(BarcodeFormat.UPC_E);
-
-        /*返回null默认为CodeFormat.QR_CODE:常用的二维条码*/
-        /*如果没有其他格式需求，建议返回null*/
-        return list;
-    }
 }
